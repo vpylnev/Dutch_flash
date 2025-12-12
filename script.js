@@ -64,6 +64,11 @@ class FlashcardApp {
     forceMobileLayout() {
         const isMobile = window.innerWidth <= 768;
         
+        // #region agent log
+        // Visual debug
+        this.updateVisualDebug(`Width: ${window.innerWidth}px<br>Mobile: ${isMobile}<br>Init: OK`);
+        // #endregion
+        
         if (isMobile) {
             // Force mobile styles with JavaScript - multiple approaches for compatibility
             if (this.sidebarLeft) {
@@ -217,6 +222,7 @@ class FlashcardApp {
         if (this.toggleCategoriesBtn) {
             this.toggleCategoriesBtn.addEventListener('click', () => {
                 // #region agent log
+                this.updateVisualDebug('📚 Menu clicked!<br>Opening left sidebar...');
                 const logData = {
                     location: 'script.js:toggleCategoriesBtn:click',
                     message: 'Categories button clicked',
@@ -238,6 +244,7 @@ class FlashcardApp {
         if (this.toggleWordsBtn) {
             this.toggleWordsBtn.addEventListener('click', () => {
                 // #region agent log
+                this.updateVisualDebug('📝 List clicked!<br>Opening right sidebar...');
                 const logData = {
                     location: 'script.js:toggleWordsBtn:click',
                     message: 'Words button clicked',
@@ -581,6 +588,9 @@ class FlashcardApp {
             this.sidebarLeft.style.setProperty('transform', 'translateX(0)', 'important');
             this.sidebarLeft.style.setProperty('-webkit-transform', 'translateX(0)', 'important');
             
+            const transform = window.getComputedStyle(this.sidebarLeft).transform;
+            this.updateVisualDebug(`LEFT OPEN!<br>Class: active<br>Transform: ${transform}<br>Z: ${window.getComputedStyle(this.sidebarLeft).zIndex}`);
+            
             const logDataAfter = {
                 location: 'script.js:openSidebar:after-left',
                 message: 'Sidebar left opened',
@@ -607,6 +617,9 @@ class FlashcardApp {
             // Force transform to 0 with JavaScript to override inline styles
             this.sidebarRight.style.setProperty('transform', 'translateX(0)', 'important');
             this.sidebarRight.style.setProperty('-webkit-transform', 'translateX(0)', 'important');
+            
+            const transform = window.getComputedStyle(this.sidebarRight).transform;
+            this.updateVisualDebug(`RIGHT OPEN!<br>Class: active<br>Transform: ${transform}<br>Z: ${window.getComputedStyle(this.sidebarRight).zIndex}`);
             
             const logDataAfter = {
                 location: 'script.js:openSidebar:after-right',
@@ -676,6 +689,17 @@ class FlashcardApp {
         }
         if (this.mobileOverlay) this.mobileOverlay.classList.remove('active');
     }
+    
+    // #region agent log
+    updateVisualDebug(message) {
+        const debugEl = document.getElementById('visual-debug');
+        const statusEl = document.getElementById('debug-status');
+        if (debugEl && statusEl && window.innerWidth <= 768) {
+            debugEl.style.display = 'block';
+            statusEl.innerHTML = message;
+        }
+    }
+    // #endregion
 }
 
 // Initialize app when DOM is loaded
