@@ -600,39 +600,39 @@ kbd {
 @media (max-width: 768px) {
     /* Show mobile menu buttons */
     .mobile-menu-buttons {
-        display: flex;
+        display: flex !important;
     }
     
     /* Main grid becomes single column */
     .app-container {
-        grid-template-columns: 1fr;
-        grid-template-rows: 1fr;
+        grid-template-columns: 1fr !important;
+        grid-template-rows: 1fr !important;
     }
     
     /* Hide sidebars by default, make them overlay */
     .sidebar {
-        position: fixed;
-        top: 0;
-        bottom: 0;
-        width: 85%;
-        max-width: 320px;
-        z-index: 999;
-        transform: translateX(-100%);
-        transition: transform 0.3s ease;
+        position: fixed !important;
+        top: 0 !important;
+        bottom: 0 !important;
+        width: 85% !important;
+        max-width: 320px !important;
+        z-index: 999 !important;
+        transform: translateX(-100%) !important;
+        transition: transform 0.3s ease !important;
     }
     
     .sidebar-left {
-        left: 0;
-        border-right: 1px solid rgba(255, 255, 255, 0.3);
-        box-shadow: 5px 0 20px rgba(0, 0, 0, 0.3);
+        left: 0 !important;
+        border-right: 1px solid rgba(255, 255, 255, 0.3) !important;
+        box-shadow: 5px 0 20px rgba(0, 0, 0, 0.3) !important;
     }
     
     .sidebar-right {
-        left: auto;
-        right: 0;
-        transform: translateX(100%);
-        border-left: 1px solid rgba(255, 255, 255, 0.3);
-        box-shadow: -5px 0 20px rgba(0, 0, 0, 0.3);
+        left: auto !important;
+        right: 0 !important;
+        transform: translateX(100%) !important;
+        border-left: 1px solid rgba(255, 255, 255, 0.3) !important;
+        box-shadow: -5px 0 20px rgba(0, 0, 0, 0.3) !important;
     }
     
     /* Show sidebars when active */
@@ -642,13 +642,13 @@ kbd {
     
     /* Show close button on mobile */
     .sidebar-close {
-        display: block;
+        display: block !important;
     }
     
     /* Adjust sidebar header for close button */
     .sidebar-header {
-        padding-top: 60px;
-        position: relative;
+        padding-top: 60px !important;
+        position: relative !important;
     }
     
     /* Main content adjustments */
