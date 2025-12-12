@@ -56,7 +56,100 @@ class FlashcardApp {
         this.sidebarLeft = document.getElementById('sidebar-left');
         this.sidebarRight = document.getElementById('sidebar-right');
         this.mobileOverlay = document.getElementById('mobile-overlay');
+        
+        // #region agent log
+        // Force mobile layout with JavaScript on small screens
+        this.forceMobileLayout();
+        // #endregion
     }
+    
+    // #region agent log
+    forceMobileLayout() {
+        const isMobile = window.innerWidth <= 768;
+        
+        const logData = {
+            location: 'script.js:forceMobileLayout',
+            message: 'Force mobile layout check',
+            data: {
+                windowWidth: window.innerWidth,
+                isMobile: isMobile,
+                sidebarLeftExists: !!this.sidebarLeft,
+                sidebarRightExists: !!this.sidebarRight,
+                action: isMobile ? 'applying-mobile-styles' : 'skipping'
+            },
+            timestamp: Date.now(),
+            sessionId: 'debug-session',
+            hypothesisId: 'C'
+        };
+        fetch('http://127.0.0.1:7242/ingest/7c2c19a6-aaed-464a-b0a8-08723f50663f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(logData)}).catch(()=>{});
+        console.log('FORCE MOBILE:', logData);
+        
+        if (isMobile) {
+            // Force mobile styles with JavaScript - multiple approaches for compatibility
+            if (this.sidebarLeft) {
+                // Remove from normal flow
+                this.sidebarLeft.style.setProperty('position', 'fixed', 'important');
+                this.sidebarLeft.style.setProperty('top', '0', 'important');
+                this.sidebarLeft.style.setProperty('bottom', '0', 'important');
+                this.sidebarLeft.style.setProperty('left', '0', 'important');
+                this.sidebarLeft.style.setProperty('width', '85%', 'important');
+                this.sidebarLeft.style.setProperty('max-width', '320px', 'important');
+                this.sidebarLeft.style.setProperty('z-index', '999', 'important');
+                
+                // Hide off-screen - try multiple methods
+                this.sidebarLeft.style.setProperty('transform', 'translateX(-100%)', 'important');
+                this.sidebarLeft.style.setProperty('-webkit-transform', 'translateX(-100%)', 'important');
+                this.sidebarLeft.style.setProperty('transition', 'transform 0.3s ease', 'important');
+                this.sidebarLeft.style.setProperty('-webkit-transition', '-webkit-transform 0.3s ease', 'important');
+                
+                // Ensure it's not taking space
+                this.sidebarLeft.classList.remove('active');
+            }
+            
+            if (this.sidebarRight) {
+                // Remove from normal flow
+                this.sidebarRight.style.setProperty('position', 'fixed', 'important');
+                this.sidebarRight.style.setProperty('top', '0', 'important');
+                this.sidebarRight.style.setProperty('bottom', '0', 'important');
+                this.sidebarRight.style.setProperty('right', '0', 'important');
+                this.sidebarRight.style.setProperty('left', 'auto', 'important');
+                this.sidebarRight.style.setProperty('width', '85%', 'important');
+                this.sidebarRight.style.setProperty('max-width', '320px', 'important');
+                this.sidebarRight.style.setProperty('z-index', '999', 'important');
+                
+                // Hide off-screen - try multiple methods
+                this.sidebarRight.style.setProperty('transform', 'translateX(100%)', 'important');
+                this.sidebarRight.style.setProperty('-webkit-transform', 'translateX(100%)', 'important');
+                this.sidebarRight.style.setProperty('transition', 'transform 0.3s ease', 'important');
+                this.sidebarRight.style.setProperty('-webkit-transition', '-webkit-transform 0.3s ease', 'important');
+                
+                // Ensure it's not taking space
+                this.sidebarRight.classList.remove('active');
+            }
+            
+            // Fix app container for single column
+            const appContainer = document.querySelector('.app-container');
+            if (appContainer) {
+                appContainer.style.setProperty('grid-template-columns', '1fr', 'important');
+                appContainer.style.setProperty('grid-template-rows', '1fr', 'important');
+            }
+            
+            // Show mobile menu buttons
+            const mobileMenuButtons = document.querySelector('.mobile-menu-buttons');
+            if (mobileMenuButtons) {
+                mobileMenuButtons.style.display = 'flex';
+            }
+            
+            // Show close buttons
+            if (this.closeCategoriesBtn) {
+                this.closeCategoriesBtn.style.display = 'block';
+            }
+            if (this.closeWordsBtn) {
+                this.closeWordsBtn.style.display = 'block';
+            }
+        }
+    }
+    // #endregion
 
     initEventListeners() {
         // Card flip
@@ -161,6 +254,16 @@ class FlashcardApp {
         if (this.mobileOverlay) {
             this.mobileOverlay.addEventListener('click', () => this.closeAllSidebars());
         }
+        
+        // #region agent log
+        // Re-apply mobile layout on resize/orientation change
+        window.addEventListener('resize', () => {
+            this.forceMobileLayout();
+        });
+        window.addEventListener('orientationchange', () => {
+            setTimeout(() => this.forceMobileLayout(), 100);
+        });
+        // #endregion
     }
 
     renderCategories() {
