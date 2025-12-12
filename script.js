@@ -57,32 +57,12 @@ class FlashcardApp {
         this.sidebarRight = document.getElementById('sidebar-right');
         this.mobileOverlay = document.getElementById('mobile-overlay');
         
-        // #region agent log
         // Force mobile layout with JavaScript on small screens
         this.forceMobileLayout();
-        // #endregion
     }
     
-    // #region agent log
     forceMobileLayout() {
         const isMobile = window.innerWidth <= 768;
-        
-        const logData = {
-            location: 'script.js:forceMobileLayout',
-            message: 'Force mobile layout check',
-            data: {
-                windowWidth: window.innerWidth,
-                isMobile: isMobile,
-                sidebarLeftExists: !!this.sidebarLeft,
-                sidebarRightExists: !!this.sidebarRight,
-                action: isMobile ? 'applying-mobile-styles' : 'skipping'
-            },
-            timestamp: Date.now(),
-            sessionId: 'debug-session',
-            hypothesisId: 'C'
-        };
-        fetch('http://127.0.0.1:7242/ingest/7c2c19a6-aaed-464a-b0a8-08723f50663f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(logData)}).catch(()=>{});
-        console.log('FORCE MOBILE:', logData);
         
         if (isMobile) {
             // Force mobile styles with JavaScript - multiple approaches for compatibility
@@ -149,7 +129,6 @@ class FlashcardApp {
             }
         }
     }
-    // #endregion
 
     initEventListeners() {
         // Card flip
@@ -255,7 +234,6 @@ class FlashcardApp {
             this.mobileOverlay.addEventListener('click', () => this.closeAllSidebars());
         }
         
-        // #region agent log
         // Re-apply mobile layout on resize/orientation change
         window.addEventListener('resize', () => {
             this.forceMobileLayout();
@@ -263,7 +241,6 @@ class FlashcardApp {
         window.addEventListener('orientationchange', () => {
             setTimeout(() => this.forceMobileLayout(), 100);
         });
-        // #endregion
     }
 
     renderCategories() {
@@ -569,73 +546,5 @@ class FlashcardApp {
 
 // Initialize app when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    // #region agent log
-    // Debug logging for mobile diagnostics
-    const debugInfo = {
-        location: 'script.js:init',
-        message: 'App initialization',
-        data: {
-            windowWidth: window.innerWidth,
-            windowHeight: window.innerHeight,
-            screenWidth: window.screen.width,
-            screenHeight: window.screen.height,
-            devicePixelRatio: window.devicePixelRatio,
-            userAgent: navigator.userAgent,
-            viewportWidth: document.documentElement.clientWidth,
-            mobileMenuBtnExists: !!document.getElementById('toggle-categories'),
-            sidebarLeftExists: !!document.getElementById('sidebar-left'),
-            sidebarRightExists: !!document.getElementById('sidebar-right')
-        },
-        timestamp: Date.now(),
-        sessionId: 'debug-session'
-    };
-    fetch('http://127.0.0.1:7242/ingest/7c2c19a6-aaed-464a-b0a8-08723f50663f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(debugInfo)}).catch(()=>{});
-    console.log('DEBUG:', debugInfo);
-    // #endregion
-    
     new FlashcardApp();
-    
-    // #region agent log
-    // Check computed styles after initialization
-    setTimeout(() => {
-        const sidebarLeft = document.getElementById('sidebar-left');
-        const sidebarRight = document.getElementById('sidebar-right');
-        const mobileMenuButtons = document.querySelector('.mobile-menu-buttons');
-        const debugInfo = document.getElementById('debug-info');
-        
-        const isMobile = window.matchMedia('(max-width: 768px)').matches;
-        
-        const styleInfo = {
-            location: 'script.js:afterInit',
-            message: 'Styles check',
-            data: {
-                sidebarLeftDisplay: sidebarLeft ? window.getComputedStyle(sidebarLeft).display : 'not-found',
-                sidebarLeftPosition: sidebarLeft ? window.getComputedStyle(sidebarLeft).position : 'not-found',
-                sidebarLeftTransform: sidebarLeft ? window.getComputedStyle(sidebarLeft).transform : 'not-found',
-                sidebarRightDisplay: sidebarRight ? window.getComputedStyle(sidebarRight).display : 'not-found',
-                mobileMenuDisplay: mobileMenuButtons ? window.getComputedStyle(mobileMenuButtons).display : 'not-found',
-                bodyWidth: document.body.offsetWidth,
-                mediaQuery768: window.matchMedia('(max-width: 768px)').matches,
-                mediaQuery992: window.matchMedia('(max-width: 992px)').matches
-            },
-            timestamp: Date.now(),
-            sessionId: 'debug-session',
-            hypothesisId: 'B'
-        };
-        fetch('http://127.0.0.1:7242/ingest/7c2c19a6-aaed-464a-b0a8-08723f50663f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(styleInfo)}).catch(()=>{});
-        console.log('DEBUG STYLES:', styleInfo);
-        
-        // Show debug info on screen if mobile
-        if (isMobile && debugInfo) {
-            debugInfo.style.display = 'block';
-            document.getElementById('debug-screen').textContent = `${window.screen.width}x${window.screen.height}`;
-            document.getElementById('debug-viewport').textContent = `${window.innerWidth}x${window.innerHeight}`;
-            document.getElementById('debug-media768').textContent = isMobile ? 'YES' : 'NO';
-            document.getElementById('debug-sidebar-left').textContent = sidebarLeft ? 
-                `pos:${window.getComputedStyle(sidebarLeft).position} transform:${window.getComputedStyle(sidebarLeft).transform}` : 'not-found';
-            document.getElementById('debug-mobile-btns').textContent = mobileMenuButtons ? 
-                `display:${window.getComputedStyle(mobileMenuButtons).display}` : 'not-found';
-        }
-    }, 500);
-    // #endregion
 });
