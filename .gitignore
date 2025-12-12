@@ -1,0 +1,31 @@
+# Operating System Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor Files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs and Debug Files
+*.log
+debug.log
+.cursor/
+
+# Temporary Files
+*.tmp
+temp_*
+
+# Backup Files
+*.bak
+*~
+
+# Node modules (if using npm in future)
+node_modules/
+
+# PDF files (optional - keep or remove based on preference)
+*.pdf
+

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dutch Flashcards - Minimal Example</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Left Sidebar - Categories -->
+        <aside class="sidebar sidebar-left">
+            <div class="sidebar-header">
+                <h2>📚 Categories</h2>
+            </div>
+            <div class="categories-list" id="categories-list">
+                <!-- Categories will be populated by JS -->
+            </div>
+        </aside>
+
+        <!-- Main Content - Flashcard -->
+        <main class="flashcard-container">
+            <div class="study-mode-toggle">
+                <button id="mode-nl-ru" class="mode-btn active">🇳🇱 → 🇷🇺</button>
+                <button id="mode-ru-nl" class="mode-btn">🇷🇺 → 🇳🇱</button>
+            </div>
+            
+            <div class="flashcard" id="flashcard">
+                <div class="flashcard-inner">
+                    <div class="flashcard-front">
+                        <div class="language-label">Dutch</div>
+                        <div class="card-text" id="front-text"></div>
+                    </div>
+                    <div class="flashcard-back">
+                        <div class="language-label">Russian</div>
+                        <div class="card-text" id="back-text"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls">
+                <button id="prev-btn" class="control-btn">← Previous</button>
+                <button id="flip-btn" class="control-btn primary">Flip Card</button>
+                <button id="next-btn" class="control-btn">Next →</button>
+            </div>
+
+            <div class="card-counter" id="card-counter"></div>
+
+            <div class="additional-controls">
+                <button id="shuffle-btn" class="secondary-btn">🔀 Shuffle</button>
+                <button id="speak-btn" class="secondary-btn">🔊 Speak (S/Ы)</button>
+            </div>
+
+            <div class="hotkeys">
+                <p><strong>Hotkeys:</strong> Space/Click - Flip | ← → - Navigate | S/Ы - Speak | Enter - Next</p>
+            </div>
+        </main>
+
+        <!-- Right Sidebar - Word List -->
+        <aside class="sidebar sidebar-right">
+            <div class="sidebar-header">
+                <h2>📝 Word List</h2>
+            </div>
+            <div class="word-list-controls">
+                <button id="list-both" class="list-ctrl-btn">Both</button>
+                <button id="list-learning" class="list-ctrl-btn active">Learning</button>
+                <button id="list-hide" class="list-ctrl-btn">Hide</button>
+            </div>
+            <div class="word-list" id="word-list">
+                <!-- Word list will be populated by JS -->
+            </div>
+        </aside>
+    </div>
+
+    <!-- 
+        MINIMAL CONFIGURATION EXAMPLE
+        
+        This example loads only basic vocabulary modules:
+        - Greetings, Numbers, Colors, Family
+        - Food, Days, Months, Weather
+        - Common Phrases, Questions
+        
+        Result: ~180 cards instead of 380+
+        
+        To use this configuration:
+        1. Copy this file to index.html
+        2. Or modify index.html script tags as shown below
+    -->
+    
+    <!-- Core data structure (REQUIRED - always load first) -->
+    <script src="data-core.js"></script>
+    
+    <!-- Load only basic modules -->
+    <script src="data-words-basic.js"></script>         <!-- Greetings, Numbers, Colors, Family -->
+    <script src="data-words-daily.js"></script>         <!-- Food, Days, Months, Weather -->
+    <script src="data-phrases-basic.js"></script>       <!-- Common phrases, Questions -->
+    
+    <!-- Advanced modules DISABLED for minimal configuration
+    <script src="data-words-extended.js"></script>
+    <script src="data-weather-school.js"></script>
+    <script src="data-phrases-situational.js"></script>
+    -->
+    
+    <!-- Main application script (REQUIRED - always load last) -->
+    <script src="script.js"></script>
+</body>
+</html>
+

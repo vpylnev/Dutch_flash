@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dutch Flashcards - Learn Dutch A1-A2</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Left Sidebar - Categories -->
+        <aside class="sidebar sidebar-left">
+            <div class="sidebar-header">
+                <h2>📚 Categories</h2>
+            </div>
+            <div class="categories-list" id="categories-list">
+                <!-- Categories will be populated by JS -->
+            </div>
+        </aside>
+
+        <!-- Main Content - Flashcard -->
+        <main class="main-content">
+            <header>
+                <h1>🇳🇱 Learn Dutch</h1>
+                <p class="subtitle">A1-A2 Level Flashcards</p>
+            </header>
+
+            <div class="mode-switcher">
+                <button class="mode-btn active" data-mode="nl-ru" title="Dutch to Russian">
+                    🇳🇱 → 🇷🇺
+                </button>
+                <button class="mode-btn" data-mode="ru-nl" title="Russian to Dutch">
+                    🇷🇺 → 🇳🇱
+                </button>
+            </div>
+
+            <div class="stats">
+                <div class="stat-item">
+                    <span class="stat-label">Card:</span>
+                    <span class="stat-value" id="current-card">1</span>
+                    <span class="stat-total">/ <span id="total-cards">200</span></span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Category:</span>
+                    <span class="stat-value" id="current-category">All</span>
+                </div>
+            </div>
+
+            <div class="card-container">
+                <div class="flashcard" id="flashcard">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <div class="card-content">
+                                <div class="language-label" id="front-label">Nederlands</div>
+                                <h2 class="word" id="front-word">Hallo</h2>
+                                <button class="speak-btn" id="speak-btn" title="Pronounce (S or Ы)">🔊</button>
+                            </div>
+                            <div class="card-hint">Click to reveal</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-content">
+                                <div class="language-label" id="back-label">Русский</div>
+                                <h2 class="word" id="back-word">Привет</h2>
+                                <p class="example" id="example"></p>
+                            </div>
+                            <div class="card-hint">Click to flip back</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls">
+                <button class="btn btn-secondary" id="prev-btn">
+                    ← Previous
+                </button>
+                <button class="btn btn-primary" id="shuffle-btn">
+                    🔀 Shuffle
+                </button>
+                <button class="btn btn-secondary" id="next-btn">
+                    Next →
+                </button>
+            </div>
+
+            <div class="keyboard-hint">
+                💡 <kbd>Space</kbd> flip • <kbd>←</kbd> <kbd>→</kbd> <kbd>Enter</kbd> navigate • <kbd>S</kbd> or <kbd>Ы</kbd> speak
+            </div>
+        </main>
+
+        <!-- Right Sidebar - Word List -->
+        <aside class="sidebar sidebar-right">
+            <div class="sidebar-header">
+                <h2>📝 Word List</h2>
+                <div class="list-controls">
+                    <button class="list-control-btn" data-view="both" title="Show both languages">
+                        🇳🇱🇷🇺
+                    </button>
+                    <button class="list-control-btn active" data-view="dutch" title="Dutch only">
+                        🇳🇱
+                    </button>
+                    <button class="list-control-btn" data-view="russian" title="Russian only">
+                        🇷🇺
+                    </button>
+                    <button class="list-control-btn" data-view="hidden" title="Hide list">
+                        👁️
+                    </button>
+                </div>
+            </div>
+            <div class="words-list" id="words-list">
+                <!-- Word list will be populated by JS -->
+            </div>
+        </aside>
+    </div>
+
+    <!-- Data loader - loads all data modules automatically -->
+    <script src="data_wrapper.js"></script>
+    
+    <!-- Main application script (load last) -->
+    <script src="script.js"></script>
+</body>
+</html>

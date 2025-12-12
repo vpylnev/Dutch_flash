@@ -1,0 +1,409 @@
+// Flashcard application logic
+class FlashcardApp {
+    constructor() {
+        this.allCards = [...flashcardsData];
+        this.cards = [...flashcardsData];
+        this.currentIndex = 0;
+        this.currentCategory = 'all';
+        this.isFlipped = false;
+        this.mode = 'nl-ru'; // 'nl-ru' or 'ru-nl'
+        this.wordListView = 'dutch'; // 'both', 'dutch', 'russian', 'hidden' - default to learning language
+        
+        this.initElements();
+        this.initEventListeners();
+        this.renderCategories();
+        this.updateCard();
+        this.updateStats();
+        this.updateWordList();
+        this.updateWordListView(); // Apply default view
+    }
+
+    initElements() {
+        // Card elements
+        this.flashcard = document.getElementById('flashcard');
+        this.frontWord = document.getElementById('front-word');
+        this.backWord = document.getElementById('back-word');
+        this.frontLabel = document.getElementById('front-label');
+        this.backLabel = document.getElementById('back-label');
+        this.example = document.getElementById('example');
+        
+        // Stats elements
+        this.currentCardEl = document.getElementById('current-card');
+        this.totalCardsEl = document.getElementById('total-cards');
+        this.currentCategoryEl = document.getElementById('current-category');
+        
+        // Navigation
+        this.prevBtn = document.getElementById('prev-btn');
+        this.nextBtn = document.getElementById('next-btn');
+        this.shuffleBtn = document.getElementById('shuffle-btn');
+        this.speakBtn = document.getElementById('speak-btn');
+        
+        // Sidebars
+        this.categoriesList = document.getElementById('categories-list');
+        this.wordsList = document.getElementById('words-list');
+        
+        // Mode switcher
+        this.modeBtns = document.querySelectorAll('.mode-btn');
+        
+        // Word list controls
+        this.listControlBtns = document.querySelectorAll('.list-control-btn');
+    }
+
+    initEventListeners() {
+        // Card flip
+        this.flashcard.addEventListener('click', (e) => {
+            if (!e.target.classList.contains('speak-btn')) {
+                this.flipCard();
+            }
+        });
+
+        // Navigation buttons
+        this.prevBtn.addEventListener('click', () => this.previousCard());
+        this.nextBtn.addEventListener('click', () => this.nextCard());
+        this.shuffleBtn.addEventListener('click', () => this.shuffleCards());
+        
+        // Speak button
+        this.speakBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.speak();
+        });
+
+        // Mode switcher
+        this.modeBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                this.modeBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                this.mode = btn.dataset.mode;
+                
+                // Reset flip state if card is flipped
+                if (this.isFlipped) {
+                    this.flashcard.classList.remove('flipped');
+                    this.isFlipped = false;
+                }
+                
+                // Auto-switch word list view to learning language
+                if (this.wordListView === 'dutch' || this.wordListView === 'russian') {
+                    if (this.mode === 'nl-ru') {
+                        this.wordListView = 'dutch';
+                        this.updateWordListButtons();
+                    } else {
+                        this.wordListView = 'russian';
+                        this.updateWordListButtons();
+                    }
+                    this.updateWordListView();
+                }
+                
+                this.updateCard();
+            });
+        });
+
+        // Word list controls
+        this.listControlBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                this.listControlBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                this.wordListView = btn.dataset.view;
+                this.updateWordListView();
+            });
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            switch(e.key) {
+                case ' ':
+                    e.preventDefault();
+                    this.flipCard();
+                    break;
+                case 'ArrowLeft':
+                    e.preventDefault();
+                    this.previousCard();
+                    break;
+                case 'ArrowRight':
+                case 'Enter':
+                    e.preventDefault();
+                    this.nextCard();
+                    break;
+                case 's':
+                case 'S':
+                case 'ы':
+                case 'Ы':
+                    this.speak();
+                    break;
+            }
+        });
+    }
+
+    renderCategories() {
+        // Count cards per category
+        const categoryCounts = {};
+        this.allCards.forEach(card => {
+            categoryCounts[card.category] = (categoryCounts[card.category] || 0) + 1;
+        });
+
+        // Add "All" category
+        let html = `
+            <div class="category-item active" data-category="all">
+                <span>All</span>
+                <span class="category-count">${this.allCards.length}</span>
+            </div>
+            <div class="category-section-title">📖 Слова</div>
+        `;
+
+        // Add word categories
+        categoryTypes.words.forEach(category => {
+            if (categoryCounts[category]) {
+                const name = categoryNames[category] || category;
+                html += `
+                    <div class="category-item" data-category="${category}">
+                        <span>${name}</span>
+                        <span class="category-count">${categoryCounts[category]}</span>
+                    </div>
+                `;
+            }
+        });
+
+        // Add phrases section
+        html += `<div class="category-section-title">💬 Фразы</div>`;
+
+        // Add phrase categories
+        categoryTypes.phrases.forEach(category => {
+            if (categoryCounts[category]) {
+                const name = categoryNames[category] || category;
+                html += `
+                    <div class="category-item" data-category="${category}">
+                        <span>${name}</span>
+                        <span class="category-count">${categoryCounts[category]}</span>
+                    </div>
+                `;
+            }
+        });
+
+        this.categoriesList.innerHTML = html;
+
+        // Add click listeners
+        document.querySelectorAll('.category-item').forEach(item => {
+            item.addEventListener('click', () => {
+                document.querySelectorAll('.category-item').forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+                this.filterByCategory(item.dataset.category);
+            });
+        });
+    }
+
+    updateWordList() {
+        if (this.cards.length === 0) {
+            this.wordsList.innerHTML = '<div style="padding: 20px; text-align: center; opacity: 0.5;">No words in this category</div>';
+            return;
+        }
+
+        let html = '';
+        this.cards.forEach((card, index) => {
+            const activeClass = index === this.currentIndex ? 'active' : '';
+            html += `
+                <div class="word-list-item ${activeClass}" data-index="${index}">
+                    <div class="word-dutch">${card.dutch}</div>
+                    <div class="word-russian">${card.russian}</div>
+                </div>
+            `;
+        });
+
+        this.wordsList.innerHTML = html;
+
+        // Add click listeners
+        document.querySelectorAll('.word-list-item').forEach((item, index) => {
+            item.addEventListener('click', () => {
+                // Reset flip state if card is flipped
+                if (this.isFlipped) {
+                    this.flashcard.classList.remove('flipped');
+                    this.isFlipped = false;
+                }
+                
+                this.currentIndex = index;
+                this.updateCard();
+                this.updateStats();
+                this.updateWordList();
+            });
+        });
+    }
+
+    updateWordListView() {
+        this.wordsList.className = 'words-list';
+        
+        if (this.wordListView === 'hidden') {
+            this.wordsList.classList.add('hidden-view');
+        } else if (this.wordListView === 'dutch') {
+            this.wordsList.classList.add('dutch-only');
+        } else if (this.wordListView === 'russian') {
+            this.wordsList.classList.add('russian-only');
+        }
+    }
+
+    updateWordListButtons() {
+        this.listControlBtns.forEach(btn => {
+            if (btn.dataset.view === this.wordListView) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+    }
+
+    updateCard() {
+        if (this.cards.length === 0) return;
+        
+        const card = this.cards[this.currentIndex];
+        
+        // Update card content based on mode
+        // Note: flip state should already be reset by navigation methods
+        if (this.mode === 'nl-ru') {
+            this.frontWord.textContent = card.dutch;
+            this.backWord.textContent = card.russian;
+            this.frontLabel.textContent = 'Nederlands';
+            this.backLabel.textContent = 'Русский';
+        } else { // ru-nl
+            this.frontWord.textContent = card.russian;
+            this.backWord.textContent = card.dutch;
+            this.frontLabel.textContent = 'Русский';
+            this.backLabel.textContent = 'Nederlands';
+        }
+        
+        this.example.textContent = card.example;
+        
+        // Update word list highlighting
+        document.querySelectorAll('.word-list-item').forEach((item, index) => {
+            if (index === this.currentIndex) {
+                item.classList.add('active');
+                item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            } else {
+                item.classList.remove('active');
+            }
+        });
+    }
+
+    flipCard() {
+        this.flashcard.classList.toggle('flipped');
+        this.isFlipped = !this.isFlipped;
+        
+        // Auto-speak when flipping to reveal answer
+        if (this.isFlipped) {
+            setTimeout(() => this.speak(), 300);
+        }
+    }
+
+    speak() {
+        const card = this.cards[this.currentIndex];
+        
+        // Always speak Dutch regardless of mode
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            
+            const utterance = new SpeechSynthesisUtterance(card.dutch);
+            utterance.lang = 'nl-NL';
+            utterance.rate = 0.8;
+            utterance.pitch = 1;
+            
+            // Visual feedback
+            this.speakBtn.style.transform = 'scale(1.2)';
+            setTimeout(() => {
+                this.speakBtn.style.transform = 'scale(1)';
+            }, 200);
+            
+            window.speechSynthesis.speak(utterance);
+        } else {
+            console.warn('Speech synthesis not supported');
+        }
+    }
+
+    nextCard() {
+        // If card is flipped, flip it back first, then navigate
+        if (this.isFlipped) {
+            this.flashcard.classList.remove('flipped');
+            this.isFlipped = false;
+            // Wait for flip animation to complete before showing next card
+            setTimeout(() => {
+                this.currentIndex = (this.currentIndex + 1) % this.cards.length;
+                this.updateCard();
+                this.updateStats();
+            }, 400); // Half of flip animation duration
+        } else {
+            this.currentIndex = (this.currentIndex + 1) % this.cards.length;
+            this.updateCard();
+            this.updateStats();
+        }
+    }
+
+    previousCard() {
+        // If card is flipped, flip it back first, then navigate
+        if (this.isFlipped) {
+            this.flashcard.classList.remove('flipped');
+            this.isFlipped = false;
+            // Wait for flip animation to complete before showing previous card
+            setTimeout(() => {
+                this.currentIndex = (this.currentIndex - 1 + this.cards.length) % this.cards.length;
+                this.updateCard();
+                this.updateStats();
+            }, 400); // Half of flip animation duration
+        } else {
+            this.currentIndex = (this.currentIndex - 1 + this.cards.length) % this.cards.length;
+            this.updateCard();
+            this.updateStats();
+        }
+    }
+
+    shuffleCards() {
+        // Reset flip state if card is flipped
+        if (this.isFlipped) {
+            this.flashcard.classList.remove('flipped');
+            this.isFlipped = false;
+        }
+        
+        // Fisher-Yates shuffle
+        for (let i = this.cards.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [this.cards[i], this.cards[j]] = [this.cards[j], this.cards[i]];
+        }
+        this.currentIndex = 0;
+        this.updateCard();
+        this.updateStats();
+        this.updateWordList();
+        
+        // Visual feedback
+        this.shuffleBtn.textContent = '✓ Shuffled';
+        setTimeout(() => {
+            this.shuffleBtn.textContent = '🔀 Shuffle';
+        }, 1000);
+    }
+
+    filterByCategory(category) {
+        this.currentCategory = category;
+        
+        // Reset flip state if card is flipped
+        if (this.isFlipped) {
+            this.flashcard.classList.remove('flipped');
+            this.isFlipped = false;
+        }
+        
+        if (category === 'all') {
+            this.cards = [...this.allCards];
+            this.currentCategoryEl.textContent = 'All';
+        } else {
+            this.cards = this.allCards.filter(card => card.category === category);
+            this.currentCategoryEl.textContent = categoryNames[category] || category;
+        }
+        
+        this.currentIndex = 0;
+        this.updateCard();
+        this.updateStats();
+        this.updateWordList();
+    }
+
+    updateStats() {
+        this.currentCardEl.textContent = this.currentIndex + 1;
+        this.totalCardsEl.textContent = this.cards.length;
+    }
+}
+
+// Initialize app when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    new FlashcardApp();
+});
