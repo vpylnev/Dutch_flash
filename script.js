@@ -215,11 +215,45 @@ class FlashcardApp {
         
         // Mobile menu handlers
         if (this.toggleCategoriesBtn) {
-            this.toggleCategoriesBtn.addEventListener('click', () => this.openSidebar('left'));
+            this.toggleCategoriesBtn.addEventListener('click', () => {
+                // #region agent log
+                const logData = {
+                    location: 'script.js:toggleCategoriesBtn:click',
+                    message: 'Categories button clicked',
+                    data: {
+                        buttonExists: true,
+                        timestamp: Date.now()
+                    },
+                    timestamp: Date.now(),
+                    sessionId: 'debug-session',
+                    hypothesisId: 'B'
+                };
+                fetch('http://127.0.0.1:7242/ingest/7c2c19a6-aaed-464a-b0a8-08723f50663f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(logData)}).catch(()=>{});
+                console.log('BUTTON CLICK: Categories', logData);
+                // #endregion
+                this.openSidebar('left');
+            });
         }
         
         if (this.toggleWordsBtn) {
-            this.toggleWordsBtn.addEventListener('click', () => this.openSidebar('right'));
+            this.toggleWordsBtn.addEventListener('click', () => {
+                // #region agent log
+                const logData = {
+                    location: 'script.js:toggleWordsBtn:click',
+                    message: 'Words button clicked',
+                    data: {
+                        buttonExists: true,
+                        timestamp: Date.now()
+                    },
+                    timestamp: Date.now(),
+                    sessionId: 'debug-session',
+                    hypothesisId: 'B'
+                };
+                fetch('http://127.0.0.1:7242/ingest/7c2c19a6-aaed-464a-b0a8-08723f50663f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(logData)}).catch(()=>{});
+                console.log('BUTTON CLICK: Words', logData);
+                // #endregion
+                this.openSidebar('right');
+            });
         }
         
         if (this.closeCategoriesBtn) {
@@ -518,12 +552,80 @@ class FlashcardApp {
     
     // Mobile sidebar management
     openSidebar(side) {
+        // #region agent log
+        const logDataBefore = {
+            location: 'script.js:openSidebar:before',
+            message: 'Opening sidebar',
+            data: {
+                side: side,
+                sidebarLeftExists: !!this.sidebarLeft,
+                sidebarRightExists: !!this.sidebarRight,
+                overlayExists: !!this.mobileOverlay,
+                sidebarLeftTransform: this.sidebarLeft ? window.getComputedStyle(this.sidebarLeft).transform : 'not-found',
+                sidebarLeftHasActive: this.sidebarLeft ? this.sidebarLeft.classList.contains('active') : false
+            },
+            timestamp: Date.now(),
+            sessionId: 'debug-session',
+            hypothesisId: 'A'
+        };
+        fetch('http://127.0.0.1:7242/ingest/7c2c19a6-aaed-464a-b0a8-08723f50663f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(logDataBefore)}).catch(()=>{});
+        console.log('OPEN SIDEBAR BEFORE:', logDataBefore);
+        // #endregion
+        
         if (side === 'left' && this.sidebarLeft) {
             this.sidebarLeft.classList.add('active');
             this.mobileOverlay.classList.add('active');
+            
+            // #region agent log
+            // Force transform to 0 with JavaScript to override inline styles
+            this.sidebarLeft.style.setProperty('transform', 'translateX(0)', 'important');
+            this.sidebarLeft.style.setProperty('-webkit-transform', 'translateX(0)', 'important');
+            
+            const logDataAfter = {
+                location: 'script.js:openSidebar:after-left',
+                message: 'Sidebar left opened',
+                data: {
+                    hasActiveClass: this.sidebarLeft.classList.contains('active'),
+                    computedTransform: window.getComputedStyle(this.sidebarLeft).transform,
+                    inlineTransform: this.sidebarLeft.style.transform,
+                    zIndex: window.getComputedStyle(this.sidebarLeft).zIndex,
+                    position: window.getComputedStyle(this.sidebarLeft).position,
+                    overlayZIndex: this.mobileOverlay ? window.getComputedStyle(this.mobileOverlay).zIndex : 'not-found'
+                },
+                timestamp: Date.now(),
+                sessionId: 'debug-session',
+                hypothesisId: 'A'
+            };
+            fetch('http://127.0.0.1:7242/ingest/7c2c19a6-aaed-464a-b0a8-08723f50663f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(logDataAfter)}).catch(()=>{});
+            console.log('OPEN SIDEBAR AFTER LEFT:', logDataAfter);
+            // #endregion
         } else if (side === 'right' && this.sidebarRight) {
             this.sidebarRight.classList.add('active');
             this.mobileOverlay.classList.add('active');
+            
+            // #region agent log
+            // Force transform to 0 with JavaScript to override inline styles
+            this.sidebarRight.style.setProperty('transform', 'translateX(0)', 'important');
+            this.sidebarRight.style.setProperty('-webkit-transform', 'translateX(0)', 'important');
+            
+            const logDataAfter = {
+                location: 'script.js:openSidebar:after-right',
+                message: 'Sidebar right opened',
+                data: {
+                    hasActiveClass: this.sidebarRight.classList.contains('active'),
+                    computedTransform: window.getComputedStyle(this.sidebarRight).transform,
+                    inlineTransform: this.sidebarRight.style.transform,
+                    zIndex: window.getComputedStyle(this.sidebarRight).zIndex,
+                    position: window.getComputedStyle(this.sidebarRight).position,
+                    overlayZIndex: this.mobileOverlay ? window.getComputedStyle(this.mobileOverlay).zIndex : 'not-found'
+                },
+                timestamp: Date.now(),
+                sessionId: 'debug-session',
+                hypothesisId: 'A'
+            };
+            fetch('http://127.0.0.1:7242/ingest/7c2c19a6-aaed-464a-b0a8-08723f50663f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(logDataAfter)}).catch(()=>{});
+            console.log('OPEN SIDEBAR AFTER RIGHT:', logDataAfter);
+            // #endregion
         }
     }
     
@@ -531,15 +633,47 @@ class FlashcardApp {
         if (side === 'left' && this.sidebarLeft) {
             this.sidebarLeft.classList.remove('active');
             this.mobileOverlay.classList.remove('active');
+            
+            // #region agent log
+            // Restore hidden position
+            if (window.innerWidth <= 768) {
+                this.sidebarLeft.style.setProperty('transform', 'translateX(-100%)', 'important');
+                this.sidebarLeft.style.setProperty('-webkit-transform', 'translateX(-100%)', 'important');
+            }
+            // #endregion
         } else if (side === 'right' && this.sidebarRight) {
             this.sidebarRight.classList.remove('active');
             this.mobileOverlay.classList.remove('active');
+            
+            // #region agent log
+            // Restore hidden position
+            if (window.innerWidth <= 768) {
+                this.sidebarRight.style.setProperty('transform', 'translateX(100%)', 'important');
+                this.sidebarRight.style.setProperty('-webkit-transform', 'translateX(100%)', 'important');
+            }
+            // #endregion
         }
     }
     
     closeAllSidebars() {
-        if (this.sidebarLeft) this.sidebarLeft.classList.remove('active');
-        if (this.sidebarRight) this.sidebarRight.classList.remove('active');
+        if (this.sidebarLeft) {
+            this.sidebarLeft.classList.remove('active');
+            // #region agent log
+            if (window.innerWidth <= 768) {
+                this.sidebarLeft.style.setProperty('transform', 'translateX(-100%)', 'important');
+                this.sidebarLeft.style.setProperty('-webkit-transform', 'translateX(-100%)', 'important');
+            }
+            // #endregion
+        }
+        if (this.sidebarRight) {
+            this.sidebarRight.classList.remove('active');
+            // #region agent log
+            if (window.innerWidth <= 768) {
+                this.sidebarRight.style.setProperty('transform', 'translateX(100%)', 'important');
+                this.sidebarRight.style.setProperty('-webkit-transform', 'translateX(100%)', 'important');
+            }
+            // #endregion
+        }
         if (this.mobileOverlay) this.mobileOverlay.classList.remove('active');
     }
 }
