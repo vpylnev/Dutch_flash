@@ -13,7 +13,8 @@
     --text-dark: #2d3748;
     --text-light: #718096;
     --border-radius: 15px;
-    --shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    --shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    --shadow-strong: 0 20px 60px rgba(0, 0, 0, 0.4);
     --transition: all 0.3s ease;
 }
 
@@ -296,6 +297,7 @@ header h1 {
     margin-bottom: 25px;
     width: 100%;
     max-width: 600px;
+    filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.25));
 }
 
 .flashcard {
@@ -325,18 +327,25 @@ header h1 {
     backface-visibility: hidden;
     background: var(--card-bg);
     border-radius: var(--border-radius);
-    box-shadow: var(--shadow);
+    box-shadow: var(--shadow-strong);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: 40px;
+    border: 3px solid rgba(255, 255, 255, 0.9);
+}
+
+.card-front {
+    background: #ffffff;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.3);
 }
 
 .card-back {
     transform: rotateY(180deg);
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
 }
 
 .language-label {
@@ -363,13 +372,15 @@ header h1 {
     font-size: 2.8rem;
     margin: 20px 0;
     font-weight: 700;
-    color: var(--text-dark);
+    color: #1a202c;
     line-height: 1.2;
     word-wrap: break-word;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .card-back .word {
     color: white;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .example {
@@ -502,30 +513,58 @@ kbd {
     background: rgba(0, 0, 0, 0.3);
 }
 
-/* Mobile Menu Buttons - Hidden on Desktop */
-.mobile-menu-buttons {
+/* Mobile Header - Hidden on Desktop */
+.mobile-header {
     display: none;
-    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 15px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
     margin-bottom: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-.mobile-menu-btn {
-    flex: 1;
-    padding: 12px 20px;
-    background: rgba(255, 255, 255, 0.95);
-    border: 2px solid var(--primary-color);
+.mobile-menu-icon {
+    width: 45px;
+    height: 45px;
+    padding: 0;
+    background: var(--primary-color);
+    border: none;
     border-radius: 10px;
-    color: var(--primary-color);
-    font-size: 1rem;
-    font-weight: 600;
+    color: white;
+    font-size: 1.5rem;
     cursor: pointer;
     transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.mobile-menu-btn:active {
-    transform: scale(0.95);
-    background: var(--primary-color);
-    color: white;
+.mobile-menu-icon:active {
+    transform: scale(0.9);
+    background: var(--secondary-color);
+}
+
+.mobile-title {
+    font-size: 1.3rem;
+    margin: 0;
+    color: var(--text-dark);
+    font-weight: 700;
+    text-align: center;
+    flex: 1;
+}
+
+.desktop-header {
+    display: block;
+}
+
+/* Icon-only buttons for navigation */
+.btn-icon {
+    padding: 12px 20px;
+    font-size: 1.5rem;
+    min-width: auto;
 }
 
 /* Mobile Overlay */
@@ -598,9 +637,18 @@ kbd {
 
 /* Mobile View - Sliding Sidebars */
 @media (max-width: 768px) {
-    /* Show mobile menu buttons */
-    .mobile-menu-buttons {
+    /* Show mobile header, hide desktop header */
+    .mobile-header {
         display: flex !important;
+    }
+    
+    .desktop-header {
+        display: none !important;
+    }
+    
+    /* Hide subtitle on mobile */
+    .subtitle {
+        display: none !important;
     }
     
     /* Main grid becomes single column */
@@ -680,13 +728,25 @@ kbd {
     }
 
     .controls {
-        flex-direction: column;
-        gap: 10px;
+        flex-direction: row;
+        gap: 8px;
+        justify-content: space-between;
     }
 
     .btn {
-        width: 100%;
-        padding: 12px;
+        padding: 12px 15px;
+        font-size: 0.95rem;
+    }
+    
+    .btn-icon {
+        padding: 12px 15px;
+        font-size: 1.8rem;
+        flex: 0 0 auto;
+        min-width: 50px;
+    }
+    
+    .btn-primary {
+        flex: 1;
     }
 
     .mode-switcher {
