@@ -47,6 +47,15 @@ class FlashcardApp {
         
         // Word list controls
         this.listControlBtns = document.querySelectorAll('.list-control-btn');
+        
+        // Mobile menu elements
+        this.toggleCategoriesBtn = document.getElementById('toggle-categories');
+        this.toggleWordsBtn = document.getElementById('toggle-words');
+        this.closeCategoriesBtn = document.getElementById('close-categories');
+        this.closeWordsBtn = document.getElementById('close-words');
+        this.sidebarLeft = document.getElementById('sidebar-left');
+        this.sidebarRight = document.getElementById('sidebar-right');
+        this.mobileOverlay = document.getElementById('mobile-overlay');
     }
 
     initEventListeners() {
@@ -131,6 +140,27 @@ class FlashcardApp {
                     break;
             }
         });
+        
+        // Mobile menu handlers
+        if (this.toggleCategoriesBtn) {
+            this.toggleCategoriesBtn.addEventListener('click', () => this.openSidebar('left'));
+        }
+        
+        if (this.toggleWordsBtn) {
+            this.toggleWordsBtn.addEventListener('click', () => this.openSidebar('right'));
+        }
+        
+        if (this.closeCategoriesBtn) {
+            this.closeCategoriesBtn.addEventListener('click', () => this.closeSidebar('left'));
+        }
+        
+        if (this.closeWordsBtn) {
+            this.closeWordsBtn.addEventListener('click', () => this.closeSidebar('right'));
+        }
+        
+        if (this.mobileOverlay) {
+            this.mobileOverlay.addEventListener('click', () => this.closeAllSidebars());
+        }
     }
 
     renderCategories() {
@@ -186,6 +216,8 @@ class FlashcardApp {
                 document.querySelectorAll('.category-item').forEach(i => i.classList.remove('active'));
                 item.classList.add('active');
                 this.filterByCategory(item.dataset.category);
+                // Close sidebar on mobile after selection
+                this.closeSidebar('left');
             });
         });
     }
@@ -222,6 +254,8 @@ class FlashcardApp {
                 this.updateCard();
                 this.updateStats();
                 this.updateWordList();
+                // Close sidebar on mobile after selection
+                this.closeSidebar('right');
             });
         });
     }
@@ -400,6 +434,33 @@ class FlashcardApp {
     updateStats() {
         this.currentCardEl.textContent = this.currentIndex + 1;
         this.totalCardsEl.textContent = this.cards.length;
+    }
+    
+    // Mobile sidebar management
+    openSidebar(side) {
+        if (side === 'left' && this.sidebarLeft) {
+            this.sidebarLeft.classList.add('active');
+            this.mobileOverlay.classList.add('active');
+        } else if (side === 'right' && this.sidebarRight) {
+            this.sidebarRight.classList.add('active');
+            this.mobileOverlay.classList.add('active');
+        }
+    }
+    
+    closeSidebar(side) {
+        if (side === 'left' && this.sidebarLeft) {
+            this.sidebarLeft.classList.remove('active');
+            this.mobileOverlay.classList.remove('active');
+        } else if (side === 'right' && this.sidebarRight) {
+            this.sidebarRight.classList.remove('active');
+            this.mobileOverlay.classList.remove('active');
+        }
+    }
+    
+    closeAllSidebars() {
+        if (this.sidebarLeft) this.sidebarLeft.classList.remove('active');
+        if (this.sidebarRight) this.sidebarRight.classList.remove('active');
+        if (this.mobileOverlay) this.mobileOverlay.classList.remove('active');
     }
 }
 
