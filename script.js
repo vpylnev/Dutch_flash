@@ -16,48 +16,7 @@ class FlashcardApp {
         this.updateStats();
         this.updateWordList();
         this.updateWordListView(); // Apply default view
-        
-        // #region agent log
-        this.debugMobileHeader();
-        // #endregion
     }
-    
-    // #region agent log
-    debugMobileHeader() {
-        setTimeout(() => {
-            const debugDiv = document.getElementById('debug-info');
-            const mobileHeader = document.querySelector('.mobile-header');
-            const btn1 = document.getElementById('toggle-categories');
-            const title = document.querySelector('.mobile-title');
-            const btn2 = document.getElementById('toggle-words');
-            
-            if (!debugDiv) return;
-            
-            if (mobileHeader && window.innerWidth <= 768) {
-                const styles = window.getComputedStyle(mobileHeader);
-                const rect = mobileHeader.getBoundingClientRect();
-                const btn1Rect = btn1 ? btn1.getBoundingClientRect() : null;
-                const titleRect = title ? title.getBoundingClientRect() : null;
-                const btn2Rect = btn2 ? btn2.getBoundingClientRect() : null;
-                
-                let html = `<b>📱 WIDTH: ${window.innerWidth}px</b><br>`;
-                html += `<b>Header:</b> justify=${styles.justifyContent}, w=${Math.round(rect.width)}<br>`;
-                html += `padding: ${styles.padding}, gap: ${styles.gap}<br>`;
-                html += `<b>📚 Btn1:</b> L=${btn1Rect ? Math.round(btn1Rect.left) : 0}, R=${btn1Rect ? Math.round(btn1Rect.right) : 0}, W=${btn1Rect ? Math.round(btn1Rect.width) : 0}<br>`;
-                html += `<b>📝 Btn2:</b> L=${btn2Rect ? Math.round(btn2Rect.left) : 0}, R=${btn2Rect ? Math.round(btn2Rect.right) : 0}, W=${btn2Rect ? Math.round(btn2Rect.width) : 0}<br>`;
-                html += `<b>Title:</b> L=${titleRect ? Math.round(titleRect.left) : 0}, R=${titleRect ? Math.round(titleRect.right) : 0}, W=${titleRect ? Math.round(titleRect.width) : 0}<br>`;
-                html += `<b>Title flex:</b> ${title ? window.getComputedStyle(title).flex : 'null'}<br>`;
-                html += `<b>❌ PROBLEM:</b> Btn1 should be at ~${Math.round(rect.left + parseFloat(styles.paddingLeft))}, Btn2 should end at ~${Math.round(rect.right - parseFloat(styles.paddingRight))}`;
-                
-                debugDiv.innerHTML = html;
-                debugDiv.style.display = 'block';
-            } else {
-                debugDiv.innerHTML = `<b>Desktop mode:</b> ${window.innerWidth}px (mobile header hidden)`;
-                debugDiv.style.display = 'block';
-            }
-        }, 1000);
-    }
-    // #endregion
 
     initElements() {
         // Card elements
