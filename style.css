@@ -768,9 +768,11 @@ kbd {
     .controls {
         display: flex !important;
         flex-direction: row !important;
-        gap: 8px;
+        gap: 5px;
         justify-content: space-between;
         align-items: center;
+        width: 100%;
+        padding: 0;
     }
 
     .btn {
@@ -781,16 +783,26 @@ kbd {
     }
     
     .btn-icon {
-        padding: 10px 12px;
-        font-size: 1.8rem;
+        padding: 15px 8px;
+        font-size: 2.5rem;
         flex: 0 0 auto;
-        min-width: 45px;
+        min-width: 60px;
         width: auto !important;
+        font-weight: bold;
+    }
+    
+    #prev-btn {
+        margin-left: 0;
+    }
+    
+    #next-btn {
+        margin-right: 0;
     }
     
     .btn-primary {
         flex: 1 1 auto;
         min-width: 0;
+        margin: 0 5px;
     }
 
     .mode-switcher {
@@ -858,9 +870,9 @@ kbd {
     }
     
     .btn-icon {
-        min-width: 40px;
-        padding: 10px;
-        font-size: 1.5rem;
+        min-width: 55px;
+        padding: 12px 6px;
+        font-size: 2.2rem;
     }
 }
 
