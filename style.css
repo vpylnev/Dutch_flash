@@ -783,28 +783,32 @@ kbd {
     }
     
     .btn-icon {
-        padding: 10px 20px;
+        padding: 10px 25px;
         font-size: 1.8rem;
         flex: 0 0 auto;
-        min-width: 80px;
+        min-width: 90px;
         width: auto !important;
-        font-weight: bold;
+        font-weight: normal;
     }
     
     #prev-btn {
         margin-left: 0;
-        padding-left: 5px;
+        padding-left: 10px;
+        padding-right: 30px;
     }
     
     #next-btn {
         margin-right: 0;
-        padding-right: 5px;
+        padding-left: 30px;
+        padding-right: 10px;
     }
     
     .btn-primary {
-        flex: 1 1 auto;
-        min-width: 0;
-        margin: 0 5px;
+        flex: 0 1 auto;
+        padding: 10px 15px !important;
+        font-size: 0.85rem !important;
+        white-space: nowrap;
+        margin: 0 3px;
     }
 
     .mode-switcher {
@@ -872,9 +876,24 @@ kbd {
     }
     
     .btn-icon {
-        min-width: 70px;
-        padding: 10px 15px;
+        min-width: 80px;
+        padding: 10px 20px;
         font-size: 1.5rem;
+    }
+    
+    #prev-btn {
+        padding-left: 8px;
+        padding-right: 25px;
+    }
+    
+    #next-btn {
+        padding-left: 25px;
+        padding-right: 8px;
+    }
+    
+    .btn-primary {
+        padding: 10px 12px !important;
+        font-size: 0.8rem !important;
     }
 }
 
