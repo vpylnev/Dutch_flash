@@ -20,7 +20,7 @@ const categoryNames = {
     animals: "Животные",
     home: "Дом",
     emotions: "Эмоции",
-    shopping_textbook: "Покупки (учебник)",
+    shopping_textbook: "(учебник) покупки",
     // Phrases
     phrases: "Базовые фразы",
     questions: "Вопросы",
