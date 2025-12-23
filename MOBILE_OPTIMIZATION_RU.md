@@ -225,3 +225,9 @@ closeAllSidebars()    // Закрыть все панели
 
 **Veel succes met leren!** 🇳🇱
 
+
+
+
+
+
+

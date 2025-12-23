@@ -86,3 +86,9 @@ This project uses [Semantic Versioning](https://semver.org/):
 - **MINOR** version for new features (backwards compatible)
 - **PATCH** version for bug fixes (backwards compatible)
 
+
+
+
+
+
+

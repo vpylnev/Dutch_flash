@@ -86,3 +86,9 @@ flashcardsData.push(
     { dutch: "kleindochter", russian: "внучка", category: "family", example: "granddaughter" }
 );
 
+
+
+
+
+
+

@@ -23,6 +23,8 @@ const categoryNames = {
     // Phrases
     phrases: "Базовые фразы",
     questions: "Вопросы",
+    modal_verbs: "Модальные глаголы",
+    holidays: "Рождество и Новый год",
     shopping: "В магазине",
     restaurant: "В ресторане",
     travel: "Путешествия",
@@ -32,6 +34,12 @@ const categoryNames = {
 // Category types for grouping
 const categoryTypes = {
     words: ['greetings', 'numbers', 'colors', 'family', 'food', 'days', 'months', 'body', 'weather', 'weather_school', 'animals', 'home', 'emotions'],
-    phrases: ['phrases', 'questions', 'shopping', 'restaurant', 'travel', 'work']
+    phrases: ['phrases', 'questions', 'modal_verbs', 'holidays', 'shopping', 'restaurant', 'travel', 'work']
 };
+
+
+
+
+
+
 

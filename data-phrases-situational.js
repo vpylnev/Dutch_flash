@@ -77,3 +77,9 @@ flashcardsData.push(
     { dutch: "Studeren", russian: "Учиться", category: "work", example: "To study" }
 );
 
+
+
+
+
+
+

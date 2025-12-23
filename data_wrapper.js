@@ -20,6 +20,8 @@
         'data-words-extended.js',          // Extended words
         'data-weather-school.js',          // Weather (school)
         'data-phrases-basic.js',           // Basic phrases
+        'data-phrases-modal.js',           // Modal verbs phrases
+        'data-phrases-holidays.js',        // Christmas and New Year
         'data-phrases-situational.js'      // Situational phrases
     ];
     
@@ -34,6 +36,8 @@
         'data-words-extended.js': true,          // Body, Animals, Home, Emotions
         'data-weather-school.js': true,          // Advanced weather vocabulary
         'data-phrases-basic.js': true,           // Common Phrases, Questions
+        'data-phrases-modal.js': true,           // Modal verbs (kunnen, mogen, moeten, willen, zullen)
+        'data-phrases-holidays.js': true,        // Christmas and New Year phrases
         'data-phrases-situational.js': true      // Shopping, Restaurant, Travel, Work
     };
     
@@ -71,4 +75,10 @@
     loadAllModules();
     
 })();
+
+
+
+
+
+
 

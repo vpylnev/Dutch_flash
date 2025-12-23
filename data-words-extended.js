@@ -71,3 +71,9 @@ flashcardsData.push(
     { dutch: "Gestrest", russian: "Напряжённый", category: "emotions", example: "Stressed" }
 );
 
+
+
+
+
+
+
