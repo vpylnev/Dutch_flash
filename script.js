@@ -580,7 +580,25 @@ class FlashcardApp {
     }
 }
 
+// Update last modified timestamp
+function updateLastModifiedTime() {
+    const updateInfoEl = document.getElementById('last-update-time');
+    if (updateInfoEl && document.lastModified) {
+        const lastMod = new Date(document.lastModified);
+        const options = { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        };
+        const formattedDate = lastMod.toLocaleString('en-US', options);
+        updateInfoEl.textContent = formattedDate.replace(',', ' at');
+    }
+}
+
 // Initialize app when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     new FlashcardApp();
+    updateLastModifiedTime();
 });
