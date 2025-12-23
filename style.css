@@ -518,13 +518,13 @@ kbd {
     display: none;
     align-items: center;
     justify-content: space-between;
-    padding: 8px 10px;
+    padding: 8px 5px;
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
     border-radius: 12px;
     margin-bottom: 12px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    gap: 8px;
+    gap: 5px;
 }
 
 .mobile-menu-icon {
@@ -552,6 +552,7 @@ kbd {
 .mobile-title {
     font-size: 1.1rem;
     margin: 0;
+    padding: 0 5px;
     color: var(--text-dark);
     font-weight: 700;
     text-align: center;
@@ -645,6 +646,12 @@ kbd {
     /* Show mobile header, hide desktop header */
     .mobile-header {
         display: flex !important;
+        padding: 8px 3px !important;
+        gap: 3px !important;
+    }
+    
+    .mobile-menu-icon {
+        margin: 0 !important;
     }
     
     header:not(.mobile-header),
