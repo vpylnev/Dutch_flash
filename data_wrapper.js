@@ -18,6 +18,7 @@
         'data-words-basic.js',             // Basic words
         'data-words-daily.js',             // Daily life words
         'data-words-extended.js',          // Extended words
+        'data-words-shopping.js',          // Shopping vocabulary (from textbook)
         'data-weather-school.js',          // Weather (school)
         'data-phrases-basic.js',           // Basic phrases
         'data-phrases-modal.js',           // Modal verbs phrases
@@ -34,6 +35,7 @@
         'data-words-basic.js': true,             // Greetings, Numbers, Colors, Family
         'data-words-daily.js': true,             // Food, Days, Months, Weather
         'data-words-extended.js': true,          // Body, Animals, Home, Emotions
+        'data-words-shopping.js': true,          // Shopping vocabulary from textbook (winkels en producten)
         'data-weather-school.js': true,          // Advanced weather vocabulary
         'data-phrases-basic.js': true,           // Common Phrases, Questions
         'data-phrases-modal.js': true,           // Modal verbs (kunnen, mogen, moeten, willen, zullen)
