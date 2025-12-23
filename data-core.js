@@ -20,13 +20,16 @@ const categoryNames = {
     animals: "Животные",
     home: "Дом",
     emotions: "Эмоции",
-    shopping_textbook: "(учебник) покупки",
+    shopping_textbook_1: "(учебник) покупки 1",
+    shopping_textbook_2: "(учебник) покупки 2",
+    shopping_textbook_3: "(учебник) покупки 3",
     // Phrases
     phrases: "Базовые фразы",
     questions: "Вопросы",
     modal_verbs: "Модальные глаголы",
     holidays: "Рождество и Новый год",
     shopping: "В магазине",
+    shopping_phrases_textbook: "(учебник) покупки",
     restaurant: "В ресторане",
     travel: "Путешествия",
     work: "Работа и учёба"
@@ -34,8 +37,8 @@ const categoryNames = {
 
 // Category types for grouping
 const categoryTypes = {
-    words: ['greetings', 'numbers', 'colors', 'family', 'food', 'days', 'months', 'body', 'weather', 'weather_school', 'animals', 'home', 'emotions', 'shopping_textbook'],
-    phrases: ['phrases', 'questions', 'modal_verbs', 'holidays', 'shopping', 'restaurant', 'travel', 'work']
+    words: ['greetings', 'numbers', 'colors', 'family', 'food', 'days', 'months', 'body', 'weather', 'weather_school', 'animals', 'home', 'emotions', 'shopping_textbook_1', 'shopping_textbook_2', 'shopping_textbook_3'],
+    phrases: ['phrases', 'questions', 'modal_verbs', 'holidays', 'shopping', 'shopping_phrases_textbook', 'restaurant', 'travel', 'work']
 };
 
 
