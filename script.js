@@ -25,65 +25,35 @@ class FlashcardApp {
     // #region agent log
     debugMobileHeader() {
         setTimeout(() => {
-            const isMobile = window.innerWidth <= 768;
+            const debugDiv = document.getElementById('debug-info');
             const mobileHeader = document.querySelector('.mobile-header');
             const btn1 = document.getElementById('toggle-categories');
             const title = document.querySelector('.mobile-title');
             const btn2 = document.getElementById('toggle-words');
             
-            if (mobileHeader) {
+            if (!debugDiv) return;
+            
+            if (mobileHeader && window.innerWidth <= 768) {
                 const styles = window.getComputedStyle(mobileHeader);
                 const rect = mobileHeader.getBoundingClientRect();
                 const btn1Rect = btn1 ? btn1.getBoundingClientRect() : null;
                 const titleRect = title ? title.getBoundingClientRect() : null;
                 const btn2Rect = btn2 ? btn2.getBoundingClientRect() : null;
                 
-                const data = {
-                    deviceInfo: {
-                        isMobile: isMobile,
-                        windowWidth: window.innerWidth,
-                        windowHeight: window.innerHeight,
-                        devicePixelRatio: window.devicePixelRatio,
-                        userAgent: navigator.userAgent.substring(0, 100)
-                    },
-                    hypothesisA_LayoutIssue: {
-                        display: styles.display,
-                        justifyContent: styles.justifyContent,
-                        flexDirection: styles.flexDirection,
-                        alignItems: styles.alignItems,
-                        width: Math.round(rect.width),
-                        padding: styles.padding,
-                        paddingLeft: styles.paddingLeft,
-                        paddingRight: styles.paddingRight,
-                        gap: styles.gap,
-                        boxSizing: styles.boxSizing
-                    },
-                    hypothesisB_Coordinates: {
-                        headerLeft: Math.round(rect.left),
-                        headerRight: Math.round(rect.right),
-                        btn1Left: btn1Rect ? Math.round(btn1Rect.left) : null,
-                        btn1Right: btn1Rect ? Math.round(btn1Rect.right) : null,
-                        btn1Width: btn1Rect ? Math.round(btn1Rect.width) : null,
-                        titleLeft: titleRect ? Math.round(titleRect.left) : null,
-                        titleRight: titleRect ? Math.round(titleRect.right) : null,
-                        titleWidth: titleRect ? Math.round(titleRect.width) : null,
-                        btn2Left: btn2Rect ? Math.round(btn2Rect.left) : null,
-                        btn2Right: btn2Rect ? Math.round(btn2Rect.right) : null,
-                        btn2Width: btn2Rect ? Math.round(btn2Rect.width) : null,
-                        expectedBtn1Left: Math.round(rect.left + parseFloat(styles.paddingLeft)),
-                        expectedBtn2Right: Math.round(rect.right - parseFloat(styles.paddingRight))
-                    },
-                    hypothesisD_FlexGrow: {
-                        btn1Flex: btn1 ? window.getComputedStyle(btn1).flex : null,
-                        titleFlex: title ? window.getComputedStyle(title).flex : null,
-                        titleFlexGrow: title ? window.getComputedStyle(title).flexGrow : null,
-                        btn2Flex: btn2 ? window.getComputedStyle(btn2).flex : null
-                    }
-                };
+                let html = `<b>📱 WIDTH: ${window.innerWidth}px</b><br>`;
+                html += `<b>Header:</b> justify=${styles.justifyContent}, w=${Math.round(rect.width)}<br>`;
+                html += `padding: ${styles.padding}, gap: ${styles.gap}<br>`;
+                html += `<b>📚 Btn1:</b> L=${btn1Rect ? Math.round(btn1Rect.left) : 0}, R=${btn1Rect ? Math.round(btn1Rect.right) : 0}, W=${btn1Rect ? Math.round(btn1Rect.width) : 0}<br>`;
+                html += `<b>📝 Btn2:</b> L=${btn2Rect ? Math.round(btn2Rect.left) : 0}, R=${btn2Rect ? Math.round(btn2Rect.right) : 0}, W=${btn2Rect ? Math.round(btn2Rect.width) : 0}<br>`;
+                html += `<b>Title:</b> L=${titleRect ? Math.round(titleRect.left) : 0}, R=${titleRect ? Math.round(titleRect.right) : 0}, W=${titleRect ? Math.round(titleRect.width) : 0}<br>`;
+                html += `<b>Title flex:</b> ${title ? window.getComputedStyle(title).flex : 'null'}<br>`;
+                html += `<b>❌ PROBLEM:</b> Btn1 should be at ~${Math.round(rect.left + parseFloat(styles.paddingLeft))}, Btn2 should end at ~${Math.round(rect.right - parseFloat(styles.paddingRight))}`;
                 
-                fetch('http://127.0.0.1:7242/ingest/7c2c19a6-aaed-464a-b0a8-08723f50663f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'script.js:debugMobileHeader',message:'Mobile header layout analysis',data:data,timestamp:Date.now(),sessionId:'debug-session',runId:'mobile-header-2',hypothesisId:'A,B,D'})}).catch(()=>{});
+                debugDiv.innerHTML = html;
+                debugDiv.style.display = 'block';
             } else {
-                fetch('http://127.0.0.1:7242/ingest/7c2c19a6-aaed-464a-b0a8-08723f50663f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'script.js:debugMobileHeader',message:'Mobile header NOT FOUND',data:{isMobile:isMobile,windowWidth:window.innerWidth},timestamp:Date.now(),sessionId:'debug-session',runId:'mobile-header-2',hypothesisId:'ERROR'})}).catch(()=>{});
+                debugDiv.innerHTML = `<b>Desktop mode:</b> ${window.innerWidth}px (mobile header hidden)`;
+                debugDiv.style.display = 'block';
             }
         }, 1000);
     }
