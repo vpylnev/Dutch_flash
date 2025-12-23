@@ -447,6 +447,10 @@ header h1, .desktop-header h1 {
     font-weight: 600;
     transition: all 0.3s ease;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
 .btn-primary {
@@ -789,6 +793,10 @@ kbd {
         min-width: 110px;
         width: auto !important;
         font-weight: normal;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
     }
     
     #prev-btn {
@@ -805,11 +813,14 @@ kbd {
     
     .btn-primary {
         flex: 0 0 auto;
-        padding: 10px 10px !important;
-        font-size: 0.75rem !important;
+        padding: 10px 12px !important;
+        font-size: 0.95rem !important;
         white-space: nowrap;
         margin: 0 2px;
         min-width: auto !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .mode-switcher {
@@ -880,6 +891,10 @@ kbd {
         min-width: 95px;
         padding: 10px 30px;
         font-size: 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
     }
     
     #prev-btn {
@@ -893,9 +908,12 @@ kbd {
     }
     
     .btn-primary {
-        padding: 10px 8px !important;
-        font-size: 0.7rem !important;
+        padding: 10px 10px !important;
+        font-size: 0.85rem !important;
         min-width: auto !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 }
 
