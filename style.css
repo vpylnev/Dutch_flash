@@ -482,6 +482,16 @@ header h1, .desktop-header h1 {
     font-size: 0.9rem;
 }
 
+.update-info {
+    text-align: center;
+    color: white;
+    opacity: 0.6;
+    font-size: 0.75rem;
+    margin-top: 15px;
+    padding: 8px;
+    font-style: italic;
+}
+
 kbd {
     background: rgba(255, 255, 255, 0.2);
     padding: 4px 8px;
@@ -519,11 +529,11 @@ kbd {
     align-items: center;
     justify-content: space-between;
     padding: 8px 5px;
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(99, 102, 241, 0.25);
     backdrop-filter: blur(10px);
     border-radius: 12px;
     margin-bottom: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     gap: 5px;
 }
 
@@ -553,13 +563,14 @@ kbd {
     font-size: 1.1rem;
     margin: 0;
     padding: 0 5px;
-    color: var(--text-dark);
+    color: white;
     font-weight: 700;
     text-align: center;
     flex: 1;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .desktop-header {
@@ -801,6 +812,12 @@ kbd {
     .keyboard-hint {
         font-size: 0.8rem;
         padding: 8px;
+    }
+    
+    .update-info {
+        font-size: 0.65rem;
+        margin-top: 10px;
+        padding: 5px;
     }
     
     /* Category list in sidebar */
