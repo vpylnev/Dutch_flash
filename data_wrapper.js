@@ -23,6 +23,7 @@
         'data-words-shopping3.js',         // Shopping vocabulary part 3 (textbook)
         'data-weather-school.js',          // Weather (school)
         'data-phrases-basic.js',           // Basic phrases
+        'data-phrases-questions-wh.js',    // Wh-questions (Wat, Wie, Waar, etc.)
         'data-phrases-modal.js',           // Modal verbs phrases
         'data-phrases-holidays.js',        // Christmas and New Year
         'data-phrases-shopping-textbook.js', // Shopping phrases (textbook)
@@ -43,6 +44,7 @@
         'data-words-shopping3.js': true,         // Shopping vocabulary part 3 (poultry, alcohol, supermarket)
         'data-weather-school.js': true,          // Advanced weather vocabulary
         'data-phrases-basic.js': true,           // Common Phrases, Questions
+        'data-phrases-questions-wh.js': true,    // Wh-questions (Wat, Wie, Waar, Wanneer, Hoe, Waarom, etc.)
         'data-phrases-modal.js': true,           // Modal verbs (kunnen, mogen, moeten, willen, zullen)
         'data-phrases-holidays.js': true,        // Christmas and New Year phrases
         'data-phrases-shopping-textbook.js': true, // Shopping phrases from textbook
