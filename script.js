@@ -433,20 +433,6 @@ class FlashcardApp {
             utterance.rate = 0.8;
             utterance.pitch = 1;
             
-            // #region agent log
-            const debugDiv = document.getElementById('speech-debug');
-            if (debugDiv) {
-                const now = new Date().toLocaleTimeString();
-                debugDiv.innerHTML = `<b>${now} 🔊 NORMAL</b><br>Rate: ${utterance.rate}<br>Text: ${card.dutch}<br>Width: ${window.innerWidth}px<br>UA: ${navigator.userAgent.substring(0, 50)}`;
-            }
-            
-            utterance.onstart = () => {
-                if (debugDiv) {
-                    debugDiv.innerHTML += '<br><b>✅ Started</b>';
-                }
-            };
-            // #endregion
-            
             // Visual feedback
             this.speakBtn.style.transform = 'scale(1.2)';
             setTimeout(() => {
@@ -466,12 +452,9 @@ class FlashcardApp {
         if ('speechSynthesis' in window) {
             window.speechSynthesis.cancel();
             
-            // #region agent log
-            const isMobile = window.innerWidth <= 768;
             const userAgent = navigator.userAgent;
+            const isMobile = window.innerWidth <= 768;
             const isIOS = /iPhone|iPad|iPod/.test(userAgent);
-            const isSafari = /Safari/.test(userAgent) && !/Chrome/.test(userAgent);
-            const debugDiv = document.getElementById('speech-debug');
             
             // iOS FIX: Get voices and select Dutch voice explicitly
             let voices = window.speechSynthesis.getVoices();
@@ -479,14 +462,13 @@ class FlashcardApp {
                 // Voices not loaded yet, wait for them
                 window.speechSynthesis.onvoiceschanged = () => {
                     voices = window.speechSynthesis.getVoices();
-                    this.speakSlowWithVoices(card.dutch, voices, debugDiv, isMobile, isIOS, isSafari);
+                    this.speakSlowWithVoices(card.dutch, voices, isMobile, isIOS);
                 };
                 // Trigger voice loading
                 window.speechSynthesis.getVoices();
             } else {
-                this.speakSlowWithVoices(card.dutch, voices, debugDiv, isMobile, isIOS, isSafari);
+                this.speakSlowWithVoices(card.dutch, voices, isMobile, isIOS);
             }
-            // #endregion
             
             // Visual feedback
             const slowBtn = document.getElementById('speak-slow-btn');
@@ -501,37 +483,20 @@ class FlashcardApp {
         }
     }
     
-    speakSlowWithVoices(text, voices, debugDiv, isMobile, isIOS, isSafari) {
+    speakSlowWithVoices(text, voices, isMobile, isIOS) {
         const utterance = new SpeechSynthesisUtterance(text);
         utterance.lang = 'nl-NL';
         
-        // Find Dutch voice
+        // Find Dutch voice for better pronunciation
         const dutchVoice = voices.find(voice => voice.lang.startsWith('nl')) || voices[0];
         if (dutchVoice) {
             utterance.voice = dutchVoice;
         }
         
-        // iOS FIX: Use extremely slow rate for iOS
+        // iOS FIX: Use extremely slow rate for iOS (0.1), moderate for other devices
         utterance.rate = isIOS ? 0.1 : (isMobile ? 0.3 : 0.5);
         utterance.pitch = 1;
         utterance.volume = 1;
-        
-        if (debugDiv) {
-            const now = new Date().toLocaleTimeString();
-            debugDiv.innerHTML = `<b>${now} 🐌 SLOW v2</b><br>Rate: ${utterance.rate}<br>Voice: ${dutchVoice ? dutchVoice.name : 'default'}<br>Text: ${text}<br>iOS: ${isIOS} (rate=${isIOS ? '0.1' : 'normal'})<br>Width: ${window.innerWidth}px`;
-        }
-        
-        utterance.onstart = () => {
-            if (debugDiv) {
-                debugDiv.innerHTML += `<br><b>✅ Started</b>`;
-            }
-        };
-        
-        utterance.onend = () => {
-            if (debugDiv) {
-                debugDiv.innerHTML += '<br><b>✔️ Ended</b>';
-            }
-        };
         
         window.speechSynthesis.speak(utterance);
     }
