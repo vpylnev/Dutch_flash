@@ -434,8 +434,17 @@ class FlashcardApp {
             utterance.pitch = 1;
             
             // #region agent log
-            const isMobile = window.innerWidth <= 768;
-            fetch('http://127.0.0.1:7242/ingest/7c2c19a6-aaed-464a-b0a8-08723f50663f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'script.js:speak',message:'Normal speak initiated',data:{text:card.dutch,rate:utterance.rate,isMobile:isMobile,width:window.innerWidth},timestamp:Date.now(),sessionId:'debug-session',runId:'normal-speech-1',hypothesisId:'COMPARE'})}).catch(()=>{});
+            const debugDiv = document.getElementById('speech-debug');
+            if (debugDiv) {
+                const now = new Date().toLocaleTimeString();
+                debugDiv.innerHTML = `<b>${now} 🔊 NORMAL</b><br>Rate: ${utterance.rate}<br>Text: ${card.dutch}<br>Width: ${window.innerWidth}px<br>UA: ${navigator.userAgent.substring(0, 50)}`;
+            }
+            
+            utterance.onstart = () => {
+                if (debugDiv) {
+                    debugDiv.innerHTML += '<br><b>✅ Started</b>';
+                }
+            };
             // #endregion
             
             // Visual feedback
@@ -471,14 +480,22 @@ class FlashcardApp {
             utterance.pitch = 1;
             utterance.volume = 1;
             
-            fetch('http://127.0.0.1:7242/ingest/7c2c19a6-aaed-464a-b0a8-08723f50663f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'script.js:speakSlow',message:'Slow speak initiated',data:{text:card.dutch,rate:utterance.rate,isMobile:isMobile,isIOS:isIOS,isSafari:isSafari,width:window.innerWidth,userAgent:userAgent.substring(0,100)},timestamp:Date.now(),sessionId:'debug-session',runId:'slow-speech-1',hypothesisId:'A,B'})}).catch(()=>{});
+            const debugDiv = document.getElementById('speech-debug');
+            if (debugDiv) {
+                const now = new Date().toLocaleTimeString();
+                debugDiv.innerHTML = `<b>${now} 🐌 SLOW</b><br>Rate: ${utterance.rate}<br>Text: ${card.dutch}<br>Mobile: ${isMobile}<br>iOS: ${isIOS}<br>Safari: ${isSafari}<br>Width: ${window.innerWidth}px`;
+            }
             
             utterance.onstart = () => {
-                fetch('http://127.0.0.1:7242/ingest/7c2c19a6-aaed-464a-b0a8-08723f50663f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'script.js:speakSlow:onstart',message:'Speech started',data:{actualRate:utterance.rate,pitch:utterance.pitch,volume:utterance.volume},timestamp:Date.now(),sessionId:'debug-session',runId:'slow-speech-1',hypothesisId:'C'})}).catch(()=>{});
+                if (debugDiv) {
+                    debugDiv.innerHTML += `<br><b>✅ Started (rate=${utterance.rate})</b>`;
+                }
             };
             
             utterance.onend = () => {
-                fetch('http://127.0.0.1:7242/ingest/7c2c19a6-aaed-464a-b0a8-08723f50663f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'script.js:speakSlow:onend',message:'Speech ended',data:{success:true},timestamp:Date.now(),sessionId:'debug-session',runId:'slow-speech-1',hypothesisId:'C'})}).catch(()=>{});
+                if (debugDiv) {
+                    debugDiv.innerHTML += '<br><b>✔️ Ended</b>';
+                }
             };
             // #endregion
             
