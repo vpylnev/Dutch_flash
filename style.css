@@ -405,11 +405,34 @@ header h1, .desktop-header h1 {
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
+    z-index: 10;
 }
 
 .speak-btn:hover {
     transform: scale(1.1);
     box-shadow: 0 6px 20px rgba(255, 107, 53, 0.6);
+}
+
+.speak-slow-btn {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    background: var(--secondary-color);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+    z-index: 10;
+}
+
+.speak-slow-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.6);
 }
 
 .speak-btn:active {
@@ -758,6 +781,22 @@ kbd {
     .flashcard {
         height: 280px;
         margin: 20px 0;
+    }
+    
+    .speak-slow-btn {
+        width: 42px;
+        height: 42px;
+        font-size: 1rem;
+        top: 15px;
+        right: 15px;
+    }
+    
+    .speak-btn {
+        width: 48px;
+        height: 48px;
+        font-size: 1.2rem;
+        bottom: 15px;
+        right: 15px;
     }
 
     .word {

@@ -37,6 +37,7 @@ class FlashcardApp {
         this.nextBtn = document.getElementById('next-btn');
         this.shuffleBtn = document.getElementById('shuffle-btn');
         this.speakBtn = document.getElementById('speak-btn');
+        this.speakSlowBtn = document.getElementById('speak-slow-btn');
         
         // Sidebars
         this.categoriesList = document.getElementById('categories-list');
@@ -148,6 +149,12 @@ class FlashcardApp {
             e.stopPropagation();
             this.speak();
         });
+        
+        // Speak slow button
+        this.speakSlowBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.speakSlow();
+        });
 
         // Mode switcher
         this.modeBtns.forEach(btn => {
@@ -209,6 +216,12 @@ class FlashcardApp {
                 case 'ы':
                 case 'Ы':
                     this.speak();
+                    break;
+                case 'd':
+                case 'D':
+                case 'в':
+                case 'В':
+                    this.speakSlow();
                     break;
             }
         });
@@ -425,6 +438,33 @@ class FlashcardApp {
             setTimeout(() => {
                 this.speakBtn.style.transform = 'scale(1)';
             }, 200);
+            
+            window.speechSynthesis.speak(utterance);
+        } else {
+            console.warn('Speech synthesis not supported');
+        }
+    }
+    
+    speakSlow() {
+        const card = this.cards[this.currentIndex];
+        
+        // Slow pronunciation for better learning
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            
+            const utterance = new SpeechSynthesisUtterance(card.dutch);
+            utterance.lang = 'nl-NL';
+            utterance.rate = 0.5; // Slower rate for careful pronunciation
+            utterance.pitch = 1;
+            
+            // Visual feedback
+            const slowBtn = document.getElementById('speak-slow-btn');
+            if (slowBtn) {
+                slowBtn.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    slowBtn.style.transform = 'scale(1)';
+                }, 200);
+            }
             
             window.speechSynthesis.speak(utterance);
         } else {
