@@ -53,6 +53,7 @@ class FlashcardApp {
         this.toggleCategoriesBtn = document.getElementById('toggle-categories');
         this.toggleWordsBtn = document.getElementById('toggle-words');
         this.toggleSoundBtn = document.getElementById('toggle-sound');
+        this.toggleSoundDesktopBtn = document.getElementById('toggle-sound-desktop');
         this.closeCategoriesBtn = document.getElementById('close-categories');
         this.closeWordsBtn = document.getElementById('close-words');
         this.sidebarLeft = document.getElementById('sidebar-left');
@@ -247,9 +248,16 @@ class FlashcardApp {
             this.toggleSoundBtn.addEventListener('click', () => {
                 this.toggleSound();
             });
-            // Initialize button state
-            this.updateSoundButton();
         }
+        
+        if (this.toggleSoundDesktopBtn) {
+            this.toggleSoundDesktopBtn.addEventListener('click', () => {
+                this.toggleSound();
+            });
+        }
+        
+        // Initialize button state for both mobile and desktop
+        this.updateSoundButton();
         
         if (this.closeCategoriesBtn) {
             this.closeCategoriesBtn.addEventListener('click', () => this.closeSidebar('left'));
@@ -680,24 +688,48 @@ class FlashcardApp {
             window.speechSynthesis.cancel();
         }
         
-        // Visual feedback
+        // Visual feedback for mobile button
         if (this.toggleSoundBtn) {
             this.toggleSoundBtn.style.transform = 'scale(1.1)';
             setTimeout(() => {
                 this.toggleSoundBtn.style.transform = 'scale(1)';
             }, 200);
         }
+        
+        // Visual feedback for desktop button
+        if (this.toggleSoundDesktopBtn) {
+            this.toggleSoundDesktopBtn.style.transform = 'scale(1.1)';
+            setTimeout(() => {
+                this.toggleSoundDesktopBtn.style.transform = 'scale(1)';
+            }, 200);
+        }
     }
     
     updateSoundButton() {
+        const icon = this.isSoundMuted ? '🔇' : '🔊';
+        const title = this.isSoundMuted ? 'Unmute Sound' : 'Mute Sound';
+        
+        // Update mobile button
         if (this.toggleSoundBtn) {
-            this.toggleSoundBtn.textContent = this.isSoundMuted ? '🔇' : '🔊';
-            this.toggleSoundBtn.title = this.isSoundMuted ? 'Unmute Sound' : 'Mute Sound';
+            this.toggleSoundBtn.textContent = icon;
+            this.toggleSoundBtn.title = title;
             
             if (this.isSoundMuted) {
                 this.toggleSoundBtn.classList.add('muted');
             } else {
                 this.toggleSoundBtn.classList.remove('muted');
+            }
+        }
+        
+        // Update desktop button
+        if (this.toggleSoundDesktopBtn) {
+            this.toggleSoundDesktopBtn.textContent = icon;
+            this.toggleSoundDesktopBtn.title = title;
+            
+            if (this.isSoundMuted) {
+                this.toggleSoundDesktopBtn.classList.add('muted');
+            } else {
+                this.toggleSoundDesktopBtn.classList.remove('muted');
             }
         }
     }
