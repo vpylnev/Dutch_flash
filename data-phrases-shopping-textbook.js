@@ -20,3 +20,4 @@ flashcardsData.push(
     { dutch: "Waar kan ik betalen?", russian: "Где я могу оплатить?", category: "shopping_phrases_textbook", example: "Where can I pay?" }
 );
 
+

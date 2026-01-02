@@ -52,11 +52,15 @@ class FlashcardApp {
         // Mobile menu elements
         this.toggleCategoriesBtn = document.getElementById('toggle-categories');
         this.toggleWordsBtn = document.getElementById('toggle-words');
+        this.toggleSoundBtn = document.getElementById('toggle-sound');
         this.closeCategoriesBtn = document.getElementById('close-categories');
         this.closeWordsBtn = document.getElementById('close-words');
         this.sidebarLeft = document.getElementById('sidebar-left');
         this.sidebarRight = document.getElementById('sidebar-right');
         this.mobileOverlay = document.getElementById('mobile-overlay');
+        
+        // Sound state
+        this.isSoundMuted = localStorage.getItem('soundMuted') === 'true';
         
         // Force mobile layout with JavaScript on small screens
         this.forceMobileLayout();
@@ -237,6 +241,14 @@ class FlashcardApp {
             this.toggleWordsBtn.addEventListener('click', () => {
                 this.openSidebar('right');
             });
+        }
+        
+        if (this.toggleSoundBtn) {
+            this.toggleSoundBtn.addEventListener('click', () => {
+                this.toggleSound();
+            });
+            // Initialize button state
+            this.updateSoundButton();
         }
         
         if (this.closeCategoriesBtn) {
@@ -422,6 +434,11 @@ class FlashcardApp {
     }
 
     speak() {
+        // Check if sound is muted
+        if (this.isSoundMuted) {
+            return;
+        }
+        
         const card = this.cards[this.currentIndex];
         
         // Always speak Dutch regardless of mode
@@ -446,6 +463,11 @@ class FlashcardApp {
     }
     
     speakSlow() {
+        // Check if sound is muted
+        if (this.isSoundMuted) {
+            return;
+        }
+        
         const card = this.cards[this.currentIndex];
         
         // Slow pronunciation for better learning
@@ -646,6 +668,38 @@ class FlashcardApp {
             }
         }
         if (this.mobileOverlay) this.mobileOverlay.classList.remove('active');
+    }
+    
+    toggleSound() {
+        this.isSoundMuted = !this.isSoundMuted;
+        localStorage.setItem('soundMuted', this.isSoundMuted.toString());
+        this.updateSoundButton();
+        
+        // Cancel any ongoing speech
+        if (this.isSoundMuted && 'speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+        }
+        
+        // Visual feedback
+        if (this.toggleSoundBtn) {
+            this.toggleSoundBtn.style.transform = 'scale(1.1)';
+            setTimeout(() => {
+                this.toggleSoundBtn.style.transform = 'scale(1)';
+            }, 200);
+        }
+    }
+    
+    updateSoundButton() {
+        if (this.toggleSoundBtn) {
+            this.toggleSoundBtn.textContent = this.isSoundMuted ? '🔇' : '🔊';
+            this.toggleSoundBtn.title = this.isSoundMuted ? 'Unmute Sound' : 'Mute Sound';
+            
+            if (this.isSoundMuted) {
+                this.toggleSoundBtn.classList.add('muted');
+            } else {
+                this.toggleSoundBtn.classList.remove('muted');
+            }
+        }
     }
 }
 

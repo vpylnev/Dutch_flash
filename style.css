@@ -564,6 +564,12 @@ kbd {
     gap: 5px;
 }
 
+.mobile-right-buttons {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
 .mobile-menu-icon {
     width: 40px;
     height: 40px;
@@ -584,6 +590,11 @@ kbd {
 .mobile-menu-icon:active {
     transform: scale(0.9);
     background: var(--secondary-color);
+}
+
+.mobile-menu-icon.muted {
+    background: rgba(255, 59, 48, 0.8);
+    opacity: 0.9;
 }
 
 .mobile-title {
