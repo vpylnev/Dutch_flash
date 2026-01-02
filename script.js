@@ -433,6 +433,11 @@ class FlashcardApp {
             utterance.rate = 0.8;
             utterance.pitch = 1;
             
+            // #region agent log
+            const isMobile = window.innerWidth <= 768;
+            fetch('http://127.0.0.1:7242/ingest/7c2c19a6-aaed-464a-b0a8-08723f50663f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'script.js:speak',message:'Normal speak initiated',data:{text:card.dutch,rate:utterance.rate,isMobile:isMobile,width:window.innerWidth},timestamp:Date.now(),sessionId:'debug-session',runId:'normal-speech-1',hypothesisId:'COMPARE'})}).catch(()=>{});
+            // #endregion
+            
             // Visual feedback
             this.speakBtn.style.transform = 'scale(1.2)';
             setTimeout(() => {
@@ -454,8 +459,28 @@ class FlashcardApp {
             
             const utterance = new SpeechSynthesisUtterance(card.dutch);
             utterance.lang = 'nl-NL';
-            utterance.rate = 0.5; // Slower rate for careful pronunciation
+            
+            // #region agent log
+            const isMobile = window.innerWidth <= 768;
+            const userAgent = navigator.userAgent;
+            const isIOS = /iPhone|iPad|iPod/.test(userAgent);
+            const isSafari = /Safari/.test(userAgent) && !/Chrome/.test(userAgent);
+            
+            // Try very slow rate for mobile devices
+            utterance.rate = isMobile ? 0.3 : 0.5;
             utterance.pitch = 1;
+            utterance.volume = 1;
+            
+            fetch('http://127.0.0.1:7242/ingest/7c2c19a6-aaed-464a-b0a8-08723f50663f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'script.js:speakSlow',message:'Slow speak initiated',data:{text:card.dutch,rate:utterance.rate,isMobile:isMobile,isIOS:isIOS,isSafari:isSafari,width:window.innerWidth,userAgent:userAgent.substring(0,100)},timestamp:Date.now(),sessionId:'debug-session',runId:'slow-speech-1',hypothesisId:'A,B'})}).catch(()=>{});
+            
+            utterance.onstart = () => {
+                fetch('http://127.0.0.1:7242/ingest/7c2c19a6-aaed-464a-b0a8-08723f50663f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'script.js:speakSlow:onstart',message:'Speech started',data:{actualRate:utterance.rate,pitch:utterance.pitch,volume:utterance.volume},timestamp:Date.now(),sessionId:'debug-session',runId:'slow-speech-1',hypothesisId:'C'})}).catch(()=>{});
+            };
+            
+            utterance.onend = () => {
+                fetch('http://127.0.0.1:7242/ingest/7c2c19a6-aaed-464a-b0a8-08723f50663f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'script.js:speakSlow:onend',message:'Speech ended',data:{success:true},timestamp:Date.now(),sessionId:'debug-session',runId:'slow-speech-1',hypothesisId:'C'})}).catch(()=>{});
+            };
+            // #endregion
             
             // Visual feedback
             const slowBtn = document.getElementById('speak-slow-btn');
