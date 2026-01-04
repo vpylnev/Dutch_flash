@@ -14,20 +14,20 @@
     
     // List of data modules to load in order
     const dataModules = [
-        'data-core.js',                    // Core structure (must be first)
-        'data-words-basic.js',             // Basic words
-        'data-words-daily.js',             // Daily life words
-        'data-words-extended.js',          // Extended words
-        'data-words-shopping1.js',         // Shopping vocabulary part 1 (textbook)
-        'data-words-shopping2.js',         // Shopping vocabulary part 2 (textbook)
-        'data-words-shopping3.js',         // Shopping vocabulary part 3 (textbook)
-        'data-weather-school.js',          // Weather (school)
-        'data-phrases-basic.js',           // Basic phrases
-        'data-phrases-questions-wh.js',    // Wh-questions (Wat, Wie, Waar, etc.)
-        'data-phrases-modal.js',           // Modal verbs phrases
-        'data-phrases-holidays.js',        // Christmas and New Year
-        'data-phrases-shopping-textbook.js', // Shopping phrases (textbook)
-        'data-phrases-situational.js'      // Situational phrases
+        'data/data-core.js',                    // Core structure (must be first)
+        'data/data-words-basic.js',             // Basic words
+        'data/data-words-daily.js',             // Daily life words
+        'data/data-words-extended.js',          // Extended words
+        'data/data-words-shopping1.js',         // Shopping vocabulary part 1 (textbook)
+        'data/data-words-shopping2.js',         // Shopping vocabulary part 2 (textbook)
+        'data/data-words-shopping3.js',         // Shopping vocabulary part 3 (textbook)
+        'data/data-weather-school.js',          // Weather (school)
+        'data/data-phrases-basic.js',           // Basic phrases
+        'data/data-phrases-questions-wh.js',    // Wh-questions (Wat, Wie, Waar, etc.)
+        'data/data-phrases-modal.js',           // Modal verbs phrases
+        'data/data-phrases-holidays.js',        // Christmas and New Year
+        'data/data-phrases-shopping-textbook.js', // Shopping phrases (textbook)
+        'data/data-phrases-situational.js'      // Situational phrases
     ];
     
     /**
@@ -35,20 +35,20 @@
      * Set to false to skip loading a module
      */
     const moduleConfig = {
-        'data-core.js': true,                    // Required - always true
-        'data-words-basic.js': true,             // Greetings, Numbers, Colors, Family
-        'data-words-daily.js': true,             // Food, Days, Months, Weather
-        'data-words-extended.js': true,          // Body, Animals, Home, Emotions
-        'data-words-shopping1.js': true,         // Shopping vocabulary part 1 (shops, meat, bread)
-        'data-words-shopping2.js': true,         // Shopping vocabulary part 2 (vegetables, fruits, dairy)
-        'data-words-shopping3.js': true,         // Shopping vocabulary part 3 (poultry, alcohol, supermarket)
-        'data-weather-school.js': true,          // Advanced weather vocabulary
-        'data-phrases-basic.js': true,           // Common Phrases, Questions
-        'data-phrases-questions-wh.js': true,    // Wh-questions (Wat, Wie, Waar, Wanneer, Hoe, Waarom, etc.)
-        'data-phrases-modal.js': true,           // Modal verbs (kunnen, mogen, moeten, willen, zullen)
-        'data-phrases-holidays.js': true,        // Christmas and New Year phrases
-        'data-phrases-shopping-textbook.js': true, // Shopping phrases from textbook
-        'data-phrases-situational.js': true      // Shopping, Restaurant, Travel, Work
+        'data/data-core.js': true,                    // Required - always true
+        'data/data-words-basic.js': true,             // Greetings, Numbers, Colors, Family
+        'data/data-words-daily.js': true,             // Food, Days, Months, Weather
+        'data/data-words-extended.js': true,          // Body, Animals, Home, Emotions
+        'data/data-words-shopping1.js': true,         // Shopping vocabulary part 1 (shops, meat, bread)
+        'data/data-words-shopping2.js': true,         // Shopping vocabulary part 2 (vegetables, fruits, dairy)
+        'data/data-words-shopping3.js': true,         // Shopping vocabulary part 3 (poultry, alcohol, supermarket)
+        'data/data-weather-school.js': true,          // Advanced weather vocabulary
+        'data/data-phrases-basic.js': true,           // Common Phrases, Questions
+        'data/data-phrases-questions-wh.js': true,    // Wh-questions (Wat, Wie, Waar, Wanneer, Hoe, Waarom, etc.)
+        'data/data-phrases-modal.js': true,           // Modal verbs (kunnen, mogen, moeten, willen, zullen)
+        'data/data-phrases-holidays.js': true,        // Christmas and New Year phrases
+        'data/data-phrases-shopping-textbook.js': true, // Shopping phrases from textbook
+        'data/data-phrases-situational.js': true      // Shopping, Restaurant, Travel, Work
     };
     
     /**
