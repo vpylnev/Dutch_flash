@@ -26,26 +26,37 @@ body {
 }
 
 .app-container {
-    display: grid;
-    grid-template-columns: 250px 1fr 300px;
     min-height: 100vh;
-    gap: 0;
 }
 
-/* Sidebars */
+/* Sidebars - Fixed on Desktop */
 .sidebar {
     background: var(--sidebar-bg);
     backdrop-filter: blur(10px);
     overflow-y: auto;
     box-shadow: var(--shadow);
+    position: fixed;
+    top: 0;
+    height: 100vh;
+    z-index: 10;
 }
 
 .sidebar-left {
+    left: 0;
+    width: 250px;
     border-right: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .sidebar-right {
+    right: 0;
+    width: 300px;
     border-left: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Main content with proper margins for fixed sidebars */
+.main-content {
+    margin-left: 250px;
+    margin-right: 300px;
 }
 
 .sidebar-header {
@@ -688,8 +699,17 @@ kbd {
 
 /* Responsive Design */
 @media (max-width: 1200px) {
-    .app-container {
-        grid-template-columns: 220px 1fr 280px;
+    .sidebar-left {
+        width: 220px;
+    }
+    
+    .sidebar-right {
+        width: 280px;
+    }
+    
+    .main-content {
+        margin-left: 220px;
+        margin-right: 280px;
     }
     
     .word {
@@ -699,8 +719,17 @@ kbd {
 
 /* Tablet View */
 @media (max-width: 992px) {
-    .app-container {
-        grid-template-columns: 200px 1fr 250px;
+    .sidebar-left {
+        width: 200px;
+    }
+    
+    .sidebar-right {
+        width: 250px;
+    }
+    
+    .main-content {
+        margin-left: 200px;
+        margin-right: 250px;
     }
     
     .word {
@@ -800,6 +829,8 @@ kbd {
     /* Main content adjustments */
     .main-content {
         padding: 15px;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
     }
     
     header h1 {
