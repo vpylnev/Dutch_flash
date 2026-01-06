@@ -25,6 +25,7 @@
         'data/data-phrases-basic.js',           // Basic phrases
         'data/data-phrases-questions-wh.js',    // Wh-questions (Wat, Wie, Waar, etc.)
         'data/data-phrases-modal.js',           // Modal verbs phrases
+        'data/data-phrases-negation.js',        // Negation phrases (geen/niet)
         'data/data-phrases-holidays.js',        // Christmas and New Year
         'data/data-phrases-shopping-textbook.js', // Shopping phrases (textbook)
         'data/data-phrases-situational.js'      // Situational phrases
@@ -46,6 +47,7 @@
         'data/data-phrases-basic.js': true,           // Common Phrases, Questions
         'data/data-phrases-questions-wh.js': true,    // Wh-questions (Wat, Wie, Waar, Wanneer, Hoe, Waarom, etc.)
         'data/data-phrases-modal.js': true,           // Modal verbs (kunnen, mogen, moeten, willen, zullen)
+        'data/data-phrases-negation.js': true,        // Negation phrases (geen/niet)
         'data/data-phrases-holidays.js': true,        // Christmas and New Year phrases
         'data/data-phrases-shopping-textbook.js': true, // Shopping phrases from textbook
         'data/data-phrases-situational.js': true      // Shopping, Restaurant, Travel, Work

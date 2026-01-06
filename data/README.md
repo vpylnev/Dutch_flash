@@ -20,6 +20,7 @@ This directory contains all vocabulary and phrase data files for the Dutch Flash
 - `data-phrases-basic.js` - Basic phrases (common expressions, questions)
 - `data-phrases-questions-wh.js` - Wh-questions (Wat, Wie, Waar, Wanneer, Hoe, Waarom)
 - `data-phrases-modal.js` - Modal verb phrases (kunnen, mogen, moeten, willen, zullen)
+- `data-phrases-negation.js` - Negation phrases (geen/niet)
 - `data-phrases-holidays.js` - Christmas and New Year themed phrases
 - `data-phrases-shopping-textbook.js` - Shopping phrases from textbook
 - `data-phrases-situational.js` - Situational phrases (shopping, restaurant, travel, work)

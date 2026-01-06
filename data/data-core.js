@@ -28,6 +28,7 @@ const categoryNames = {
     questions: "Вопросы",
     questions_wh: "Вопросы с вопросительными словами",
     modal_verbs: "Модальные глаголы",
+    phrases_negation: "Отрицания (geen/niet)",
     holidays: "Рождество и Новый год",
     shopping: "В магазине",
     shopping_phrases_textbook: "(учебник) покупки",
@@ -39,7 +40,7 @@ const categoryNames = {
 // Category types for grouping
 const categoryTypes = {
     words: ['greetings', 'numbers', 'colors', 'family', 'food', 'days', 'months', 'body', 'weather', 'weather_school', 'animals', 'home', 'emotions', 'shopping_textbook_1', 'shopping_textbook_2', 'shopping_textbook_3'],
-    phrases: ['phrases', 'questions', 'questions_wh', 'modal_verbs', 'holidays', 'shopping', 'shopping_phrases_textbook', 'restaurant', 'travel', 'work']
+    phrases: ['phrases', 'questions', 'questions_wh', 'modal_verbs', 'phrases_negation', 'holidays', 'shopping', 'shopping_phrases_textbook', 'restaurant', 'travel', 'work']
 };
 
 
