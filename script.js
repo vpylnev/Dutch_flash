@@ -137,10 +137,34 @@ class FlashcardApp {
     }
 
     initEventListeners() {
+        // Track mousedown position for drag detection
+        this.mouseDownX = null;
+        this.mouseDownY = null;
+        
         // Card flip
+        this.flashcard.addEventListener('mousedown', (e) => {
+            this.mouseDownX = e.clientX;
+            this.mouseDownY = e.clientY;
+        });
+        
         this.flashcard.addEventListener('click', (e) => {
             if (!e.target.classList.contains('speak-btn')) {
-                this.flipCard();
+                // Check if text is selected
+                const selection = window.getSelection();
+                const selectedText = selection.toString();
+                
+                // Check for drag (mouse moved during click)
+                const mouseUpX = e.clientX;
+                const mouseUpY = e.clientY;
+                const dragThreshold = 5; // pixels
+                const isDrag = this.mouseDownX !== null && 
+                              (Math.abs(mouseUpX - this.mouseDownX) > dragThreshold || 
+                               Math.abs(mouseUpY - this.mouseDownY) > dragThreshold);
+                
+                // Only flip if no text is selected and it's not a drag
+                if (selectedText.length === 0 && !isDrag) {
+                    this.flipCard();
+                }
             }
         });
 
