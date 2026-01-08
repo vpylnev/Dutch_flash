@@ -44,5 +44,38 @@ When adding new vocabulary or phrases:
 Each file should:
 - Append to the `flashcardsData` array
 - Use proper category IDs from `data-core.js`
-- Include Dutch word/phrase, Russian translation, and optional example
+- Include Dutch word/phrase, Russian translation, English translation, and optional example
+
+### Card Structure
+
+```javascript
+{
+    dutch: "Hallo",           // Dutch word/phrase (required)
+    russian: "Привет",        // Russian translation (required)
+    english: "Hello",         // English translation (optional but recommended)
+    category: "greetings",    // Category ID from data-core.js (required)
+    example: "Informal greeting"  // Usage note or context (optional)
+}
+```
+
+## Language Support
+
+The app supports two interface languages:
+- 🇷🇺 **Russian** (default) - for Russian-speaking learners
+- 🇬🇧 **English** - for English-speaking learners
+
+### Adding English Translations
+
+To support English-speaking users, add the `english` field to each card:
+
+**Status of English Translations:**
+- ✅ `data-words-basic.js` - Complete (greetings, numbers, colors, family)
+- ⚠️  All other files - Need English translations (fallback to `russian` or `example` field)
+
+**How to add:**
+1. Open any data file
+2. Add `english: "translation"` field to each card
+3. Commit the changes
+
+If a card doesn't have an `english` field, the app will fallback to `russian` or `example` field for English interface users.
 

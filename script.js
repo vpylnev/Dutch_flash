@@ -8,9 +8,11 @@ class FlashcardApp {
         this.isFlipped = false;
         this.mode = 'nl-ru'; // 'nl-ru' or 'ru-nl'
         this.wordListView = 'dutch'; // 'both', 'dutch', 'russian', 'hidden' - default to learning language
+        this.interfaceLang = localStorage.getItem('interfaceLang') || 'ru'; // 'ru' or 'en'
         
         this.initElements();
         this.initEventListeners();
+        this.applyTranslations(); // Apply UI translations
         this.renderCategories();
         this.updateCard();
         this.updateStats();
@@ -45,6 +47,9 @@ class FlashcardApp {
         
         // Mode switcher
         this.modeBtns = document.querySelectorAll('.mode-btn');
+        
+        // Language switcher
+        this.langBtns = document.querySelectorAll('.lang-btn');
         
         // Word list controls
         this.listControlBtns = document.querySelectorAll('.list-control-btn');
@@ -185,6 +190,37 @@ class FlashcardApp {
             this.speakSlow();
         });
 
+        // Language switcher
+        this.langBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                this.langBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                this.interfaceLang = btn.dataset.lang;
+                localStorage.setItem('interfaceLang', this.interfaceLang);
+                
+                // Update all UI text
+                this.applyTranslations();
+                
+                // Update mode buttons text
+                this.updateModeButtons();
+                
+                // Refresh categories and word list
+                this.renderCategories();
+                this.updateCard();
+                this.updateStats();
+                this.updateWordList();
+            });
+        });
+        
+        // Initialize language buttons state
+        this.langBtns.forEach(btn => {
+            if (btn.dataset.lang === this.interfaceLang) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+
         // Mode switcher
         this.modeBtns.forEach(btn => {
             btn.addEventListener('click', () => {
@@ -305,6 +341,8 @@ class FlashcardApp {
     }
 
     renderCategories() {
+        const t = translations[this.interfaceLang];
+        
         // Count cards per category
         const categoryCounts = {};
         this.allCards.forEach(card => {
@@ -314,16 +352,16 @@ class FlashcardApp {
         // Add "All" category
         let html = `
             <div class="category-item active" data-category="all">
-                <span>All</span>
+                <span>${t.allCategory}</span>
                 <span class="category-count">${this.allCards.length}</span>
             </div>
-            <div class="category-section-title">📖 Слова</div>
+            <div class="category-section-title">📖 ${this.interfaceLang === 'ru' ? 'Слова' : 'Words'}</div>
         `;
 
         // Add word categories
         categoryTypes.words.forEach(category => {
             if (categoryCounts[category]) {
-                const name = categoryNames[category] || category;
+                const name = t[category] || categoryNames[category] || category;
                 html += `
                     <div class="category-item" data-category="${category}">
                         <span>${name}</span>
@@ -334,12 +372,12 @@ class FlashcardApp {
         });
 
         // Add phrases section
-        html += `<div class="category-section-title">💬 Фразы</div>`;
+        html += `<div class="category-section-title">${t.phrasesTitle}</div>`;
 
         // Add phrase categories
         categoryTypes.phrases.forEach(category => {
             if (categoryCounts[category]) {
-                const name = categoryNames[category] || category;
+                const name = t[category] || categoryNames[category] || category;
                 html += `
                     <div class="category-item" data-category="${category}">
                         <span>${name}</span>
@@ -365,17 +403,19 @@ class FlashcardApp {
 
     updateWordList() {
         if (this.cards.length === 0) {
-            this.wordsList.innerHTML = '<div style="padding: 20px; text-align: center; opacity: 0.5;">No words in this category</div>';
+            const noWordsText = this.interfaceLang === 'ru' ? 'Нет слов в этой категории' : 'No words in this category';
+            this.wordsList.innerHTML = `<div style="padding: 20px; text-align: center; opacity: 0.5;">${noWordsText}</div>`;
             return;
         }
 
         let html = '';
         this.cards.forEach((card, index) => {
             const activeClass = index === this.currentIndex ? 'active' : '';
+            const translation = this.getCurrentTranslation(card);
             html += `
                 <div class="word-list-item ${activeClass}" data-index="${index}">
                     <div class="word-dutch">${card.dutch}</div>
-                    <div class="word-russian">${card.russian}</div>
+                    <div class="word-russian">${translation}</div>
                 </div>
             `;
         });
@@ -427,18 +467,20 @@ class FlashcardApp {
         if (this.cards.length === 0) return;
         
         const card = this.cards[this.currentIndex];
+        const translation = this.getCurrentTranslation(card);
+        const translationLang = this.interfaceLang === 'ru' ? 'Русский' : 'English';
         
         // Update card content based on mode
         // Note: flip state should already be reset by navigation methods
         if (this.mode === 'nl-ru') {
             this.frontWord.textContent = card.dutch;
-            this.backWord.textContent = card.russian;
+            this.backWord.textContent = translation;
             this.frontLabel.textContent = 'Nederlands';
-            this.backLabel.textContent = 'Русский';
+            this.backLabel.textContent = translationLang;
         } else { // ru-nl
-            this.frontWord.textContent = card.russian;
+            this.frontWord.textContent = translation;
             this.backWord.textContent = card.dutch;
-            this.frontLabel.textContent = 'Русский';
+            this.frontLabel.textContent = translationLang;
             this.backLabel.textContent = 'Nederlands';
         }
         
@@ -616,6 +658,7 @@ class FlashcardApp {
     }
 
     filterByCategory(category) {
+        const t = translations[this.interfaceLang];
         this.currentCategory = category;
         
         // Reset flip state if card is flipped
@@ -626,10 +669,10 @@ class FlashcardApp {
         
         if (category === 'all') {
             this.cards = [...this.allCards];
-            this.currentCategoryEl.textContent = 'All';
+            this.currentCategoryEl.textContent = t.allCategory;
         } else {
             this.cards = this.allCards.filter(card => card.category === category);
-            this.currentCategoryEl.textContent = categoryNames[category] || category;
+            this.currentCategoryEl.textContent = t[category] || categoryNames[category] || category;
         }
         
         this.currentIndex = 0;
@@ -756,6 +799,56 @@ class FlashcardApp {
                 this.toggleSoundDesktopBtn.classList.remove('muted');
             }
         }
+    }
+    
+    // Apply translations to UI elements
+    applyTranslations() {
+        const t = translations[this.interfaceLang];
+        
+        // Update headers
+        const desktopTitle = document.querySelector('.desktop-header h1');
+        const mobileTitle = document.querySelector('.mobile-title');
+        if (desktopTitle) desktopTitle.textContent = `🇳🇱 ${t.title}`;
+        if (mobileTitle) mobileTitle.textContent = `🇳🇱 ${t.title}`;
+        
+        // Update mode buttons
+        this.updateModeButtons();
+        
+        // Update button labels
+        if (this.prevBtn) this.prevBtn.textContent = t.previous;
+        if (this.nextBtn) this.nextBtn.textContent = t.next;
+        if (this.shuffleBtn && this.shuffleBtn.textContent.includes('Shuffle') || this.shuffleBtn.textContent.includes('Перемешать')) {
+            this.shuffleBtn.textContent = t.shuffle;
+        }
+        
+        // Update sound button title
+        this.updateSoundButton();
+    }
+    
+    // Update mode buttons based on interface language
+    updateModeButtons() {
+        const t = translations[this.interfaceLang];
+        const secondLang = this.interfaceLang === 'ru' ? '🇷🇺' : '🇬🇧';
+        
+        this.modeBtns.forEach(btn => {
+            if (btn.dataset.mode === 'nl-ru') {
+                btn.textContent = `🇳🇱 → ${secondLang}`;
+                btn.title = this.interfaceLang === 'ru' ? 'Dutch to Russian' : 'Dutch to English';
+            } else if (btn.dataset.mode === 'ru-nl') {
+                btn.textContent = `${secondLang} → 🇳🇱`;
+                btn.title = this.interfaceLang === 'ru' ? 'Russian to Dutch' : 'English to Dutch';
+            }
+        });
+    }
+    
+    // Get translation for a card based on interface language
+    getCurrentTranslation(card) {
+        // If interface is English and card has 'english' field, use it
+        // Otherwise fall back to 'russian' field or 'example' field
+        if (this.interfaceLang === 'en') {
+            return card.english || card.russian || card.example;
+        }
+        return card.russian;
     }
 }
 
