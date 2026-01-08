@@ -41,8 +41,8 @@ const translations = {
         work: "Работа и учёба",
         
         // Buttons and controls
-        previous: "⬅️ Пред",
-        next: "След ➡️",
+        previous: "⬅️",
+        next: "➡️",
         shuffle: "🔀 Перемешать",
         shuffled: "✓ Перемешано",
         speak: "🔊",
@@ -123,8 +123,8 @@ const translations = {
         work: "Work and study",
         
         // Buttons and controls
-        previous: "⬅️ Prev",
-        next: "Next ➡️",
+        previous: "⬅️",
+        next: "➡️",
         shuffle: "🔀 Shuffle",
         shuffled: "✓ Shuffled",
         speak: "🔊",
