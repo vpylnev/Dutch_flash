@@ -69,8 +69,9 @@ The app supports two interface languages:
 To support English-speaking users, add the `english` field to each card:
 
 **Status of English Translations:**
-- ✅ `data-words-basic.js` - Complete (greetings, numbers, colors, family)
-- ⚠️  All other files - Need English translations (fallback to `russian` or `example` field)
+- ✅ All word categories - Complete
+- ✅ All phrase categories - Complete
+- ✅ All files now have full English support
 
 **How to add:**
 1. Open any data file
