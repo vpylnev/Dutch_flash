@@ -79,7 +79,12 @@ const translations = {
         // Hints
         hint1: "💡 Нажмите на карточку, чтобы увидеть перевод",
         hint2: "⌨️ Используйте ← → для навигации, пробел для переворота",
-        hint3: "🔊 Нажмите S для обычного произношения, D для медленного"
+        hint3: "🔊 Нажмите S для обычного произношения, D для медленного",
+
+        // Word list search
+        searchPlaceholder: "Поиск...",
+        noWords: "Нет слов в этой категории",
+        noMatches: "Нет совпадений"
     },
     
     en: {
@@ -161,7 +166,12 @@ const translations = {
         // Hints
         hint1: "💡 Click on the card to see translation",
         hint2: "⌨️ Use ← → to navigate, space to flip",
-        hint3: "🔊 Press S for normal pronunciation, D for slow"
+        hint3: "🔊 Press S for normal pronunciation, D for slow",
+
+        // Word list search
+        searchPlaceholder: "Search...",
+        noWords: "No words in this category",
+        noMatches: "No matches"
     }
 };
 

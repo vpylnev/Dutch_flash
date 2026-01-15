@@ -9,6 +9,7 @@ class FlashcardApp {
         this.mode = 'nl-ru'; // 'nl-ru' or 'ru-nl'
         this.wordListView = 'dutch'; // 'both', 'dutch', 'russian', 'hidden' - default to learning language
         this.interfaceLang = localStorage.getItem('interfaceLang') || 'ru'; // 'ru' or 'en'
+        this.wordSearchQuery = '';
         
         this.initElements();
         this.initEventListeners();
@@ -44,6 +45,7 @@ class FlashcardApp {
         // Sidebars
         this.categoriesList = document.getElementById('categories-list');
         this.wordsList = document.getElementById('words-list');
+        this.wordSearchInput = document.getElementById('word-search');
         
         // Mode switcher
         this.modeBtns = document.querySelectorAll('.mode-btn');
@@ -70,6 +72,10 @@ class FlashcardApp {
         
         // Force mobile layout with JavaScript on small screens
         this.forceMobileLayout();
+
+        // #region agent log
+        fetch('http://127.0.0.1:7242/ingest/7c2c19a6-aaed-464a-b0a8-08723f50663f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'script.js:initElements',message:'Word search input presence',data:{hasInput:!!this.wordSearchInput},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'H1'})}).catch(()=>{});
+        // #endregion
     }
     
     forceMobileLayout() {
@@ -260,6 +266,18 @@ class FlashcardApp {
             });
         });
 
+        if (this.wordSearchInput) {
+            this.wordSearchInput.addEventListener('input', (e) => {
+                this.wordSearchQuery = e.target.value || '';
+
+                // #region agent log
+                fetch('http://127.0.0.1:7242/ingest/7c2c19a6-aaed-464a-b0a8-08723f50663f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'script.js:wordSearchInput',message:'Word search input changed',data:{length:this.wordSearchQuery.length},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'H3'})}).catch(()=>{});
+                // #endregion
+
+                this.updateWordList();
+            });
+        }
+
         // Keyboard shortcuts
         document.addEventListener('keydown', (e) => {
             switch(e.key) {
@@ -402,14 +420,38 @@ class FlashcardApp {
     }
 
     updateWordList() {
+        const t = translations[this.interfaceLang];
+
         if (this.cards.length === 0) {
-            const noWordsText = this.interfaceLang === 'ru' ? 'Нет слов в этой категории' : 'No words in this category';
-            this.wordsList.innerHTML = `<div style="padding: 20px; text-align: center; opacity: 0.5;">${noWordsText}</div>`;
+            this.wordsList.innerHTML = `<div style="padding: 20px; text-align: center; opacity: 0.5;">${t.noWords}</div>`;
+            return;
+        }
+
+        const query = (this.wordSearchQuery || '').trim().toLowerCase();
+        const filteredCards = this.cards
+            .map((card, index) => ({ card, index }))
+            .filter(({ card }) => {
+                if (!query) return true;
+                const haystack = [
+                    card.dutch,
+                    card.russian,
+                    card.english,
+                    card.example
+                ].filter(Boolean).join(' ').toLowerCase();
+                return haystack.includes(query);
+            });
+
+        // #region agent log
+        fetch('http://127.0.0.1:7242/ingest/7c2c19a6-aaed-464a-b0a8-08723f50663f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'script.js:updateWordList',message:'Word list filtering',data:{queryLength:query.length,total:this.cards.length,filtered:filteredCards.length},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'H2'})}).catch(()=>{});
+        // #endregion
+
+        if (filteredCards.length === 0) {
+            this.wordsList.innerHTML = `<div style="padding: 20px; text-align: center; opacity: 0.5;">${t.noMatches}</div>`;
             return;
         }
 
         let html = '';
-        this.cards.forEach((card, index) => {
+        filteredCards.forEach(({ card, index }) => {
             const activeClass = index === this.currentIndex ? 'active' : '';
             const translation = this.getCurrentTranslation(card);
             html += `
@@ -423,15 +465,17 @@ class FlashcardApp {
         this.wordsList.innerHTML = html;
 
         // Add click listeners
-        document.querySelectorAll('.word-list-item').forEach((item, index) => {
+        document.querySelectorAll('.word-list-item').forEach((item) => {
             item.addEventListener('click', () => {
+                const cardIndex = Number(item.dataset.index);
+
                 // Reset flip state if card is flipped
                 if (this.isFlipped) {
                     this.flashcard.classList.remove('flipped');
                     this.isFlipped = false;
                 }
-                
-                this.currentIndex = index;
+
+                this.currentIndex = Number.isNaN(cardIndex) ? 0 : cardIndex;
                 this.updateCard();
                 this.updateStats();
                 this.updateWordList();
@@ -819,6 +863,10 @@ class FlashcardApp {
         if (this.nextBtn) this.nextBtn.textContent = t.next;
         if (this.shuffleBtn && this.shuffleBtn.textContent.includes('Shuffle') || this.shuffleBtn.textContent.includes('Перемешать')) {
             this.shuffleBtn.textContent = t.shuffle;
+        }
+
+        if (this.wordSearchInput) {
+            this.wordSearchInput.placeholder = t.searchPlaceholder;
         }
         
         // Update sound button title
