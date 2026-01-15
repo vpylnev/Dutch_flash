@@ -28,6 +28,7 @@
         'data/data-phrases-negation.js',        // Negation phrases (geen/niet)
         'data/data-phrases-holidays.js',        // Christmas and New Year
         'data/data-phrases-shopping-textbook.js', // Shopping phrases (textbook)
+        'data/data-phrases-shopping-textbook-2.js', // Shopping phrases (textbook) part 2
         'data/data-phrases-food-price.js',      // Food adjectives and price phrases (textbook)
         'data/data-phrases-situational.js'      // Situational phrases
     ];
@@ -51,6 +52,7 @@
         'data/data-phrases-negation.js': true,        // Negation phrases (geen/niet)
         'data/data-phrases-holidays.js': true,        // Christmas and New Year phrases
         'data/data-phrases-shopping-textbook.js': true, // Shopping phrases from textbook
+        'data/data-phrases-shopping-textbook-2.js': true, // Shopping phrases from textbook (part 2)
         'data/data-phrases-food-price.js': true,      // Food adjectives and price phrases
         'data/data-phrases-situational.js': true      // Shopping, Restaurant, Travel, Work
     };
