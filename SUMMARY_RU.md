@@ -123,7 +123,7 @@ const moduleConfig = {
 
 ```javascript
 flashcardsData.push(
-    { dutch: "nieuw woord", russian: "новое слово", category: "greetings", example: "info" }
+    { dutch: "nieuw woord", russian: "новое слово", example: "info", category: "greetings" }
 );
 ```
 
@@ -217,4 +217,5 @@ A: Да! См. документацию в `DATA_STRUCTURE.md`
 **Откройте `index.html` и начните учить нидерландский!**
 
 **Veel succes met leren!** (Удачи в обучении!) 🎓🇳🇱
+
 

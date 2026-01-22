@@ -181,7 +181,7 @@ Edit the appropriate data module (e.g., `data-words-basic.js`) and add to `flash
 
 ```javascript
 flashcardsData.push(
-    { dutch: "Your Dutch word", russian: "Russian translation", category: "greetings", example: "info" }
+    { dutch: "Your Dutch word", russian: "Russian translation", example: "info", category: "greetings" }
 );
 ```
 
@@ -203,7 +203,7 @@ const categoryTypes = {
 2. Create new data file (e.g., `data-words-sports.js`):
 ```javascript
 flashcardsData.push(
-    { dutch: "voetbal", russian: "футбол", category: "sports", example: "football" }
+    { dutch: "voetbal", russian: "футбол", example: "football", category: "sports" }
 );
 ```
 
@@ -261,4 +261,5 @@ Created for Dutch language learners at A1-A2 level.
 ---
 
 **Veel succes met leren!** (Good luck with learning!)
+
 

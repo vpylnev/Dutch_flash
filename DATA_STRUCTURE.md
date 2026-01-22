@@ -121,7 +121,7 @@ Open the appropriate data file (e.g., `data-words-basic.js`) and add new cards:
 
 ```javascript
 flashcardsData.push(
-    { dutch: "nieuw woord", russian: "новое слово", category: "greetings", example: "new word" }
+    { dutch: "nieuw woord", russian: "новое слово", example: "new word", category: "greetings" }
 );
 ```
 
@@ -147,7 +147,7 @@ const categoryTypes = {
 ```javascript
 // data-words-sports.js
 flashcardsData.push(
-    { dutch: "voetbal", russian: "футбол", category: "sports", example: "football" },
+    { dutch: "voetbal", russian: "футбол", example: "football", category: "sports" },
     // ... more cards
 );
 ```
@@ -175,4 +175,5 @@ flashcardsData.push(
 The old `data.js` file has been replaced with this modular structure. All 380+ cards are preserved across the new modules.
 
 If you need to revert to the old structure, you can combine all module files back into a single `data.js` file.
+
 

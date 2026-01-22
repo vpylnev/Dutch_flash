@@ -177,7 +177,7 @@ Each module follows this pattern:
 ```javascript
 // Module header comment
 flashcardsData.push(
-    { dutch: "word", russian: "слово", category: "category_name", example: "info" },
+    { dutch: "word", russian: "слово", example: "info", category: "category_name" },
     // ... more cards
 );
 ```
@@ -233,6 +233,7 @@ See documentation:
 **Version**: 2.0.0  
 **Date**: 2024-12-12  
 **Status**: ✅ Complete and tested
+
 
 
 

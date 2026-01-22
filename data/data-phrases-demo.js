@@ -11,10 +11,11 @@
 // - Keep fields: dutch, russian, english, example
 
 flashcardsData.push(
-    { dutch: "phrase1", russian: "фраза1", english: "phrase1", category: "demo_phrases", example: "phrase1 - фраза1" },
-    { dutch: "phrase2", russian: "фраза2", english: "phrase2", category: "demo_phrases", example: "phrase2 - фраза2" },
-    { dutch: "phrase3", russian: "фраза3", english: "phrase3", category: "demo_phrases", example: "phrase3 - фраза3" }
+    { dutch: "phrase1", russian: "фраза1", english: "phrase1", example: "phrase1 - фраза1", category: "demo_phrases" },
+    { dutch: "phrase2", russian: "фраза2", english: "phrase2", example: "phrase2 - фраза2", category: "demo_phrases" },
+    { dutch: "phrase3", russian: "фраза3", english: "phrase3", example: "phrase3 - фраза3", category: "demo_phrases" }
 );
+
 
 
 
