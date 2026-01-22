@@ -81,6 +81,11 @@ class FlashcardApp {
         const langBtnTexts = Array.from(this.langBtns || []).map(btn => ({text:btn.textContent.trim(),lang:btn.dataset.lang}));
         fetch('http://127.0.0.1:7242/ingest/7c2c19a6-aaed-464a-b0a8-08723f50663f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'script.js:initElements',message:'Language buttons detected',data:{count:(this.langBtns||[]).length,langBtnTexts,isMobile:window.innerWidth<=768},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'H4'})}).catch(()=>{});
         // #endregion
+
+        // #region agent log
+        const listControlTexts = Array.from(this.listControlBtns || []).map(btn => ({view:btn.dataset.view,text:btn.textContent.trim(),title:btn.title}));
+        fetch('http://127.0.0.1:7242/ingest/7c2c19a6-aaed-464a-b0a8-08723f50663f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'script.js:initElements',message:'List control buttons detected',data:{count:(this.listControlBtns||[]).length,listControlTexts,isMobile:window.innerWidth<=768},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'H7'})}).catch(()=>{});
+        // #endregion
     }
     
     forceMobileLayout() {
@@ -897,6 +902,11 @@ class FlashcardApp {
         // #region agent log
         const modeTexts = Array.from(this.modeBtns || []).map(btn => btn.textContent.trim());
         fetch('http://127.0.0.1:7242/ingest/7c2c19a6-aaed-464a-b0a8-08723f50663f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'script.js:applyTranslations',message:'Applied translations',data:{lang:this.interfaceLang,modeTexts,hasLangBtns:(this.langBtns||[]).length,isMobile:window.innerWidth<=768},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'H2'})}).catch(()=>{});
+        // #endregion
+
+        // #region agent log
+        const listControlTexts = Array.from(this.listControlBtns || []).map(btn => ({view:btn.dataset.view,text:btn.textContent.trim(),title:btn.title}));
+        fetch('http://127.0.0.1:7242/ingest/7c2c19a6-aaed-464a-b0a8-08723f50663f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'script.js:applyTranslations',message:'List control buttons state',data:{lang:this.interfaceLang,listControlTexts,isMobile:window.innerWidth<=768},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'H8'})}).catch(()=>{});
         // #endregion
     }
     
