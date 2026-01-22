@@ -16,6 +16,13 @@ flashcardsData.push(
     { dutch: "Die zijn mooi.", russian: "Те красивые.", english: "Those are nice.", category: "shopping_phrases_textbook_2", example: "Those are nice." },
     { dutch: "Waar kan ik ... vinden?", russian: "Где я могу найти ...?", english: "Where can I find ...?", category: "shopping_phrases_textbook_2", example: "Where can I find ...?" },
     { dutch: "Mag ik ze passen?", russian: "Можно я их примерю?", english: "May I try them on?", category: "shopping_phrases_textbook_2", example: "May I try them on?" },
-    { dutch: "De paskamers zijn daar.", russian: "Примерочные там.", english: "The fitting rooms are over there.", category: "shopping_phrases_textbook_2", example: "The fitting rooms are over there." }
+    { dutch: "De paskamers zijn daar.", russian: "Примерочные там.", english: "The fitting rooms are over there.", category: "shopping_phrases_textbook_2", example: "The fitting rooms are over there." },
+
+   // Фразы с фото
+   { dutch: "Wat betekent ... ?", russian: "Что это значит?", english: "What does ... mean?", category: "shopping_phrases_textbook_2", example: "What does ... mean?" },
+   { dutch: "Ik ben benieuwd naar jouw mening.", russian: "Что ты думаешь об ...?", english: "I'm curious about your opinion.", category: "shopping_phrases_textbook_2", example: "I'm curious about your opinion." },
+   { dutch: "Wat is het verschil tussen ... en ... ?", russian: "Какая разница между ... и ...?", english: "What is the difference between ... and ...?", category: "shopping_phrases_textbook_2", example: "What is the difference between ... and ...?" },
+   { dutch: "Je hebt geen ... nodig.", russian: "Тебе не нужно ... .", english: "You don't need ... .", category: "shopping_phrases_textbook_2", example: "You don't need ... ." },
+
 );
 

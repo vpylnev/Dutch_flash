@@ -46,8 +46,13 @@ flashcardsData.push(
     { dutch: "1 pond = 500 gram", russian: "1 фунт = 500 грамм", english: "1 pound = 500 grams", category: "shopping_phrases_textbook", example: "1 pound = 500 grams" },
     { dutch: "1 kilo = 1000 gram", russian: "1 кило = 1000 грамм", english: "1 kilo = 1000 grams", category: "shopping_phrases_textbook", example: "1 kilo = 1000 grams" },
 
+ 
     // Дополнительно (вне таблицы на фото)
     { dutch: "Mag ik een kilo?", russian: "Можно мне килограмм?", english: "May I have a kilo?", category: "shopping_phrases_textbook", example: "May I have a kilo?" },
     { dutch: "Heeft u...?", russian: "У вас есть...?", english: "Do you have...?", category: "shopping_phrases_textbook", example: "Do you have...?" },
     { dutch: "Is dit vers?", russian: "Это свежее?", english: "Is this fresh?", category: "shopping_phrases_textbook", example: "Is this fresh?" }
 );
+
+// #region agent log
+fetch('http://127.0.0.1:7242/ingest/7c2c19a6-aaed-464a-b0a8-08723f50663f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'data-phrases-shopping-textbook.js',message:'Shopping textbook phrases updated',data:{added:4},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'H1'})}).catch(()=>{});
+// #endregion
