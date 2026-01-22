@@ -23,6 +23,7 @@
         'data/data-words-basic.js',             // Basic words
         'data/data-words-daily.js',             // Daily life words
         'data/data-words-extended.js',          // Extended words
+        'data/data-words-demo.js',              // Demo words
         'data/data-words-clothing.js',          // Clothing vocabulary
         'data/data-words-shopping1.js',         // Shopping vocabulary part 1 (textbook)
         'data/data-words-shopping2.js',         // Shopping vocabulary part 2 (textbook)
@@ -32,6 +33,7 @@
         'data/data-phrases-questions-wh.js',    // Wh-questions (Wat, Wie, Waar, etc.)
         'data/data-phrases-modal.js',           // Modal verbs phrases
         'data/data-phrases-negation.js',        // Negation phrases (geen/niet)
+        'data/data-phrases-demo.js',            // Demo phrases
         'data/data-phrases-holidays.js',        // Christmas and New Year
         'data/data-phrases-shopping-textbook.js', // Shopping phrases (textbook)
         'data/data-phrases-shopping-textbook-2.js', // Shopping phrases (textbook) part 2
@@ -49,6 +51,7 @@
         'data/data-words-basic.js': true,             // Greetings, Numbers, Colors, Family
         'data/data-words-daily.js': true,             // Food, Days, Months, Weather
         'data/data-words-extended.js': true,          // Body, Animals, Home, Emotions
+        'data/data-words-demo.js': true,              // Demo words
         'data/data-words-clothing.js': true,          // Clothing vocabulary
         'data/data-words-shopping1.js': true,         // Shopping vocabulary part 1 (shops, meat, bread)
         'data/data-words-shopping2.js': true,         // Shopping vocabulary part 2 (vegetables, fruits, dairy)
@@ -58,6 +61,7 @@
         'data/data-phrases-questions-wh.js': true,    // Wh-questions (Wat, Wie, Waar, Wanneer, Hoe, Waarom, etc.)
         'data/data-phrases-modal.js': true,           // Modal verbs (kunnen, mogen, moeten, willen, zullen)
         'data/data-phrases-negation.js': true,        // Negation phrases (geen/niet)
+        'data/data-phrases-demo.js': true,            // Demo phrases
         'data/data-phrases-holidays.js': true,        // Christmas and New Year phrases
         'data/data-phrases-shopping-textbook.js': true, // Shopping phrases from textbook
         'data/data-phrases-shopping-textbook-2.js': true, // Shopping phrases from textbook (part 2)

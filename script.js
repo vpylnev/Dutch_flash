@@ -368,6 +368,10 @@ class FlashcardApp {
             categoryCounts[card.category] = (categoryCounts[card.category] || 0) + 1;
         });
 
+        // #region agent log
+        fetch('http://127.0.0.1:7242/ingest/7c2c19a6-aaed-464a-b0a8-08723f50663f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'script.js:renderCategories',message:'Demo category counts',data:{demoWords:categoryCounts.demo_words||0,demoPhrases:categoryCounts.demo_phrases||0,total:this.allCards.length},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'H3'})}).catch(()=>{});
+        // #endregion
+
 
         // Add "All" category
         let html = `
