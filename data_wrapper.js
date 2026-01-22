@@ -18,6 +18,7 @@
         'data/data-words-basic.js',             // Basic words
         'data/data-words-daily.js',             // Daily life words
         'data/data-words-extended.js',          // Extended words
+        'data/data-words-clothing.js',          // Clothing vocabulary
         'data/data-words-shopping1.js',         // Shopping vocabulary part 1 (textbook)
         'data/data-words-shopping2.js',         // Shopping vocabulary part 2 (textbook)
         'data/data-words-shopping3.js',         // Shopping vocabulary part 3 (textbook)
@@ -31,7 +32,7 @@
         'data/data-phrases-shopping-textbook-2.js', // Shopping phrases (textbook) part 2
         'data/data-phrases-textbook-verbs.js', // Verb pairs and particles (textbook)
         'data/data-phrases-food-price.js',      // Food adjectives and price phrases (textbook)
-        'data/data-phrases-situational.js'      // Situational phrases
+        'data/data-phrases-situational.js',      // Situational phrases
     ];
     
     /**
@@ -43,6 +44,7 @@
         'data/data-words-basic.js': true,             // Greetings, Numbers, Colors, Family
         'data/data-words-daily.js': true,             // Food, Days, Months, Weather
         'data/data-words-extended.js': true,          // Body, Animals, Home, Emotions
+        'data/data-words-clothing.js': true,          // Clothing vocabulary
         'data/data-words-shopping1.js': true,         // Shopping vocabulary part 1 (shops, meat, bread)
         'data/data-words-shopping2.js': true,         // Shopping vocabulary part 2 (vegetables, fruits, dairy)
         'data/data-words-shopping3.js': true,         // Shopping vocabulary part 3 (poultry, alcohol, supermarket)
@@ -56,7 +58,7 @@
         'data/data-phrases-shopping-textbook-2.js': true, // Shopping phrases from textbook (part 2)
         'data/data-phrases-textbook-verbs.js': true,  // Verb pairs and particles (textbook)
         'data/data-phrases-food-price.js': true,      // Food adjectives and price phrases
-        'data/data-phrases-situational.js': true      // Shopping, Restaurant, Travel, Work
+        'data/data-phrases-situational.js': true,      // Shopping, Restaurant, Travel, Work
     };
     
     /**
