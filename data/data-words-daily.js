@@ -1,3 +1,8 @@
+/*
+ * Author: Valentin Pylnev
+ * Created: 2025-2026
+ */
+
 // Daily life vocabulary - Food, Days, Months, Weather
 // Load after data-core.js
 

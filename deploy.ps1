@@ -1,3 +1,6 @@
+# Author: Valentin Pylnev
+# Created: 2025-2026
+
 # Deployment script for Dutch Flashcards
 # Usage: .\deploy.ps1 "Your commit message"
 

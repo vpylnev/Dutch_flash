@@ -1,3 +1,8 @@
+/*
+ * Author: Valentin Pylnev
+ * Created: 2025-2026
+ */
+
 // Basic phrases - Common Phrases, Questions
 // Load after data-core.js
 

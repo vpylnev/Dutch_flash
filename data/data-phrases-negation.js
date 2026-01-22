@@ -1,3 +1,8 @@
+/*
+ * Author: Valentin Pylnev
+ * Created: 2025-2026
+ */
+
 // Negation phrases - Фразы с отрицаниями (geen/niet)
 // Load after data-core.js
 

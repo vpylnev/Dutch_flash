@@ -1,3 +1,8 @@
+/*
+ * Author: Valentin Pylnev
+ * Created: 2025-2026
+ */
+
 // UI translations for the flashcard app
 const translations = {
     ru: {

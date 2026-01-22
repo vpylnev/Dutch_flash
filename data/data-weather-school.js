@@ -1,3 +1,8 @@
+/*
+ * Author: Valentin Pylnev
+ * Created: 2025-2026
+ */
+
 // Weather vocabulary for school (advanced level)
 // Load after data-core.js
 

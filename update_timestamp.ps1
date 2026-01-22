@@ -1,3 +1,6 @@
+# Author: Valentin Pylnev
+# Created: 2025-2026
+
 # Script to update the last modified timestamp in index.html before commit
 # This ensures the timestamp reflects the actual time of code changes on GitHub
 

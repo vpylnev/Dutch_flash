@@ -1,3 +1,8 @@
+/*
+ * Author: Valentin Pylnev
+ * Created: 2025-2026
+ */
+
 // Modal verbs phrases - Kunnen, Mogen, Moeten, Willen, Zullen
 // Load after data-core.js
 

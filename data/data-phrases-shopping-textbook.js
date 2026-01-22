@@ -1,3 +1,8 @@
+/*
+ * Author: Valentin Pylnev
+ * Created: 2025-2026
+ */
+
 // Shopping phrases from textbook - Фразы для покупок
 // Load after data-core.js
 

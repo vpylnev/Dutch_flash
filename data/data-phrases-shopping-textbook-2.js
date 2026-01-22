@@ -1,3 +1,8 @@
+/*
+ * Author: Valentin Pylnev
+ * Created: 2025-2026
+ */
+
 // Shopping phrases from textbook (part 2) - Фразы для покупок (обувь, одежда)
 // Load after data-core.js
 

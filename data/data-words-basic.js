@@ -1,3 +1,8 @@
+/*
+ * Author: Valentin Pylnev
+ * Created: 2025-2026
+ */
+
 // Basic vocabulary words - Greetings, Numbers, Colors, Family
 // Load after data-core.js
 

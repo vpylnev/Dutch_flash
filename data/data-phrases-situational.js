@@ -1,3 +1,8 @@
+/*
+ * Author: Valentin Pylnev
+ * Created: 2025-2026
+ */
+
 // Situational phrases - Shopping, Restaurant, Travel, Work
 // Load after data-core.js
 

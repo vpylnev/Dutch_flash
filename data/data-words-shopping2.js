@@ -1,3 +1,8 @@
+/*
+ * Author: Valentin Pylnev
+ * Created: 2025-2026
+ */
+
 // Shopping vocabulary from textbook - Part 2: Овощи, Фрукты, Молочные продукты
 // Load after data-core.js
 

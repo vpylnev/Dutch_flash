@@ -1,3 +1,8 @@
+<!--
+Author: Valentin Pylnev
+Created: 2025-2026
+-->
+
 # 🇳🇱 Dutch Flashcards - Learn Dutch A1-A2
 
 A beautiful, modern web-based flashcard application for learning Dutch language at A1-A2 level with enhanced features.

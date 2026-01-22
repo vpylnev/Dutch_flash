@@ -1,3 +1,8 @@
+/*
+ * Author: Valentin Pylnev
+ * Created: 2025-2026
+ */
+
 // Holiday phrases - Christmas and New Year
 // Load after data-core.js
 

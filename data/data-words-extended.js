@@ -1,3 +1,8 @@
+/*
+ * Author: Valentin Pylnev
+ * Created: 2025-2026
+ */
+
 // Extended vocabulary - Body, Animals, Home, Emotions
 // Load after data-core.js
 

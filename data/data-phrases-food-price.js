@@ -1,3 +1,8 @@
+/*
+ * Author: Valentin Pylnev
+ * Created: 2025-2026
+ */
+
 // Food adjectives and price phrases (учебник - прилагательные еда и цена)
 // Adjectives describing taste, quality, temperature, and price phrases
 

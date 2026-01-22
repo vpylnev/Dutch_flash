@@ -1,3 +1,8 @@
+/*
+ * Author: Valentin Pylnev
+ * Created: 2025-2026
+ */
+
 // Textbook verbs and particles - proberen/passen, maar/wel, liggen/leggen, staan/zetten, zitten/doen, stoppen
 // Load after data-core.js
 

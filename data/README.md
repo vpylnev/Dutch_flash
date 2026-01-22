@@ -1,3 +1,8 @@
+<!--
+Author: Valentin Pylnev
+Created: 2025-2026
+-->
+
 # Data Files Directory
 
 This directory contains all vocabulary and phrase data files for the Dutch Flashcards application.

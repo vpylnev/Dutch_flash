@@ -1,3 +1,8 @@
+/*
+ * Author: Valentin Pylnev
+ * Created: 2025-2026
+ */
+
 // Core data structure - always load this first
 // This file contains category names and types definitions
 
