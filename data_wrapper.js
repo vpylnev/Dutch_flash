@@ -23,6 +23,7 @@
         'data/data-words-basic.js',             // Basic words
         'data/data-words-daily.js',             // Daily life words
         'data/data-words-extended.js',          // Extended words
+        // Demo words: edit data/data-words-demo.js or add your own file
         'data/data-words-demo.js',              // Demo words
         'data/data-words-clothing.js',          // Clothing vocabulary
         'data/data-words-shopping1.js',         // Shopping vocabulary part 1 (textbook)
@@ -33,6 +34,7 @@
         'data/data-phrases-questions-wh.js',    // Wh-questions (Wat, Wie, Waar, etc.)
         'data/data-phrases-modal.js',           // Modal verbs phrases
         'data/data-phrases-negation.js',        // Negation phrases (geen/niet)
+        // Demo phrases: edit data/data-phrases-demo.js or add your own file
         'data/data-phrases-demo.js',            // Demo phrases
         'data/data-phrases-holidays.js',        // Christmas and New Year
         'data/data-phrases-shopping-textbook.js', // Shopping phrases (textbook)

@@ -4,6 +4,11 @@
  */
 // Demo words - sample entries
 // Load after data-core.js
+// How to add a new word:
+// - Add a new object below in flashcardsData.push(...)
+// - Сategory "demo_phrases" linked with data-core.js file. 
+//   If you need new category you should use the same name in of category in flashcardsData and in categoryTypes in data-core.js file
+// - Keep fields: dutch, russian, english, example
 
 flashcardsData.push(
     { dutch: "word1", russian: "слово1", english: "word1", category: "demo_words", example: "word1 - слово1" },
@@ -13,7 +18,5 @@ flashcardsData.push(
     { dutch: "word5", russian: "слово5", english: "word5", category: "demo_words", example: "word5 - слово5" }
 );
 
-// #region agent log
-fetch('http://127.0.0.1:7242/ingest/7c2c19a6-aaed-464a-b0a8-08723f50663f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'data-words-demo.js',message:'Demo words loaded',data:{count:5},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'H1'})}).catch(()=>{});
-// #endregion
+
 
