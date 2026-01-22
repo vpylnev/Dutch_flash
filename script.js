@@ -76,6 +76,11 @@ class FlashcardApp {
         // #region agent log
         fetch('http://127.0.0.1:7242/ingest/7c2c19a6-aaed-464a-b0a8-08723f50663f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'script.js:initElements',message:'Word search input presence',data:{hasInput:!!this.wordSearchInput},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'H1'})}).catch(()=>{});
         // #endregion
+
+        // #region agent log
+        const langBtnTexts = Array.from(this.langBtns || []).map(btn => ({text:btn.textContent.trim(),lang:btn.dataset.lang}));
+        fetch('http://127.0.0.1:7242/ingest/7c2c19a6-aaed-464a-b0a8-08723f50663f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'script.js:initElements',message:'Language buttons detected',data:{count:(this.langBtns||[]).length,langBtnTexts,isMobile:window.innerWidth<=768},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'H4'})}).catch(()=>{});
+        // #endregion
     }
     
     forceMobileLayout() {
@@ -203,6 +208,10 @@ class FlashcardApp {
                 btn.classList.add('active');
                 this.interfaceLang = btn.dataset.lang;
                 localStorage.setItem('interfaceLang', this.interfaceLang);
+
+                // #region agent log
+                fetch('http://127.0.0.1:7242/ingest/7c2c19a6-aaed-464a-b0a8-08723f50663f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'script.js:langSwitchClick',message:'Interface language changed',data:{lang:this.interfaceLang,isMobile:window.innerWidth<=768,btnText:btn.textContent.trim()},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'H1'})}).catch(()=>{});
+                // #endregion
                 
                 // Update all UI text
                 this.applyTranslations();
@@ -226,6 +235,19 @@ class FlashcardApp {
                 btn.classList.remove('active');
             }
         });
+
+        // #region agent log
+        const activeLangBtn = Array.from(this.langBtns || []).find(btn => btn.classList.contains('active'));
+        fetch('http://127.0.0.1:7242/ingest/7c2c19a6-aaed-464a-b0a8-08723f50663f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'script.js:initEventListeners',message:'Initial active language button',data:{activeLang:activeLangBtn ? activeLangBtn.dataset.lang : null,isMobile:window.innerWidth<=768},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'H5'})}).catch(()=>{});
+        // #endregion
+
+        // #region agent log
+        document.addEventListener('click', (e) => {
+            const langBtn = e.target.closest ? e.target.closest('.lang-btn') : null;
+            if (!langBtn) return;
+            fetch('http://127.0.0.1:7242/ingest/7c2c19a6-aaed-464a-b0a8-08723f50663f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'script.js:langBtnDelegatedClick',message:'Language button click captured',data:{lang:langBtn.dataset.lang,isMobile:window.innerWidth<=768,text:langBtn.textContent.trim()},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'H6'})}).catch(()=>{});
+        });
+        // #endregion
 
         // Mode switcher
         this.modeBtns.forEach(btn => {
@@ -871,6 +893,11 @@ class FlashcardApp {
         
         // Update sound button title
         this.updateSoundButton();
+
+        // #region agent log
+        const modeTexts = Array.from(this.modeBtns || []).map(btn => btn.textContent.trim());
+        fetch('http://127.0.0.1:7242/ingest/7c2c19a6-aaed-464a-b0a8-08723f50663f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'script.js:applyTranslations',message:'Applied translations',data:{lang:this.interfaceLang,modeTexts,hasLangBtns:(this.langBtns||[]).length,isMobile:window.innerWidth<=768},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'H2'})}).catch(()=>{});
+        // #endregion
     }
     
     // Update mode buttons based on interface language
@@ -887,6 +914,11 @@ class FlashcardApp {
                 btn.title = this.interfaceLang === 'ru' ? 'Russian to Dutch' : 'English to Dutch';
             }
         });
+
+        // #region agent log
+        const updatedTexts = Array.from(this.modeBtns || []).map(btn => btn.textContent.trim());
+        fetch('http://127.0.0.1:7242/ingest/7c2c19a6-aaed-464a-b0a8-08723f50663f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'script.js:updateModeButtons',message:'Mode buttons updated',data:{lang:this.interfaceLang,updatedTexts,isMobile:window.innerWidth<=768},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'H3'})}).catch(()=>{});
+        // #endregion
     }
     
     // Get translation for a card based on interface language

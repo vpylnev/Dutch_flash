@@ -70,3 +70,4 @@ git config --unset http.sslVerify
 3. После запуска скрипта должно быть сообщение: "Timestamp updated to: ..."
 
 
+

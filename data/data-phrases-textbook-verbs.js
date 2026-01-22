@@ -7,9 +7,6 @@ flashcardsData.push(
     { dutch: "Ik wil deze schoenen proberen.", russian: "Я хочу попробовать эти туфли.", english: "I want to try these shoes.", category: "textbook_verbs_pairs", example: "Try" },
     { dutch: "Maar ik wil het wel passen.", russian: "Но я всё же хочу это примерить.", english: "But I do want to try it on.", category: "textbook_verbs_pairs", example: "maar / wel" },
 
-    // Maar / wel
-    { dutch: "Ik wil wel kijken, maar niet kopen.", russian: "Я хочу посмотреть, но не покупать.", english: "I do want to look, but not buy.", category: "textbook_verbs_pairs", example: "maar / wel" },
-
     // Liggen / leggen
     { dutch: "Het boek ligt op de tafel.", russian: "Книга лежит на столе.", english: "The book is lying on the table.", category: "textbook_verbs_pairs", example: "liggen" },
     { dutch: "Ik leg het boek op de tafel.", russian: "Я кладу книгу на стол.", english: "I put the book on the table.", category: "textbook_verbs_pairs", example: "leggen" },
