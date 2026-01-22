@@ -895,6 +895,20 @@ class FlashcardApp {
         if (this.wordSearchInput) {
             this.wordSearchInput.placeholder = t.searchPlaceholder;
         }
+
+        if (this.listControlBtns) {
+            this.listControlBtns.forEach(btn => {
+                if (btn.dataset.view === 'both') {
+                    btn.textContent = t.both;
+                } else if (btn.dataset.view === 'dutch') {
+                    btn.textContent = t.dutch;
+                } else if (btn.dataset.view === 'russian') {
+                    btn.textContent = t.russian;
+                } else if (btn.dataset.view === 'hidden') {
+                    btn.textContent = t.hidden;
+                }
+            });
+        }
         
         // Update sound button title
         this.updateSoundButton();
