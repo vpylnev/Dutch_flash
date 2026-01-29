@@ -404,6 +404,10 @@ header h1, .desktop-header h1 {
     position: relative;
 }
 
+.flashcard.auto-flip-delay .card-inner {
+    transition-delay: 0.2s;
+}
+
 .flashcard.flipped .card-inner {
     transform: rotateY(180deg);
 }

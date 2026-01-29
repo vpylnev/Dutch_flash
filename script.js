@@ -39,6 +39,7 @@ this.wordSearchQuery = '';
     initElements() {
         // Card elements
         this.flashcard = document.getElementById('flashcard');
+        this.cardInner = this.flashcard ? this.flashcard.querySelector('.card-inner') : null;
         this.frontWord = document.getElementById('front-word');
         this.backWord = document.getElementById('back-word');
         this.frontLabel = document.getElementById('front-label');
@@ -191,6 +192,15 @@ this.wordSearchQuery = '';
                 }
             }
         });
+        
+        if (this.cardInner) {
+            this.cardInner.addEventListener('transitionend', (e) => {
+                if (e.propertyName !== 'transform') return;
+                if (this.flashcard.classList.contains('auto-flip-delay')) {
+                    this.flashcard.classList.remove('auto-flip-delay');
+                }
+            });
+        }
 
         // Navigation buttons
         this.prevBtn.addEventListener('click', () => this.previousCard());
@@ -581,6 +591,14 @@ this.wordSearchQuery = '';
         }
     }
 
+    applyAutoFlipDelay() {
+        if (!this.flashcard) return;
+        if (!this.flashcard.classList.contains('auto-flip-delay')) {
+            this.flashcard.classList.add('auto-flip-delay');
+        }
+        this.flipCard(false);
+    }
+
     speak(options = {}) {
         const { autoFlip = false, source = 'unknown' } = options;
         const requestId = ++this.speakRequestId;
@@ -600,7 +618,7 @@ this.wordSearchQuery = '';
                     const stillCurrent = this.currentIndex === indexAtStart;
                     const shouldFlip = autoFlip && !this.isFlipped && stillCurrent && requestId === this.speakRequestId;
                     if (shouldFlip) {
-                        this.flipCard(false);
+                        this.applyAutoFlipDelay();
                     }
                 };
                 window.speechSynthesis.speak(utterance);
@@ -621,7 +639,7 @@ this.wordSearchQuery = '';
                 const stillCurrent = this.currentIndex === indexAtStart;
                 const shouldFlip = autoFlip && !this.isFlipped && stillCurrent && requestId === this.speakRequestId;
                 if (shouldFlip) {
-                    this.flipCard(false);
+                    this.applyAutoFlipDelay();
                 }
             };
             utterance.onerror = () => {
@@ -693,7 +711,7 @@ this.wordSearchQuery = '';
             const stillCurrent = this.currentIndex === indexAtStart;
             const shouldFlip = autoFlip && !this.isFlipped && stillCurrent && requestId === this.speakRequestId;
             if (shouldFlip) {
-                this.flipCard(false);
+                this.applyAutoFlipDelay();
             }
         };
         
@@ -880,27 +898,15 @@ this.wordSearchQuery = '';
 
     async requestWakeLock() {
         if (!('wakeLock' in navigator)) {
-            // #region agent log
-            fetch('http://127.0.0.1:7242/ingest/7c2c19a6-aaed-464a-b0a8-08723f50663f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'script.js:requestWakeLock',message:'Wake Lock not supported',data:{autoPlayActive:this.autoPlayActive,ua:navigator.userAgent},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'H1'})}).catch(()=>{});
-            // #endregion
             return;
         }
         if (this.wakeLockSentinel) return;
         try {
             this.wakeLockSentinel = await navigator.wakeLock.request('screen');
-            // #region agent log
-            fetch('http://127.0.0.1:7242/ingest/7c2c19a6-aaed-464a-b0a8-08723f50663f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'script.js:requestWakeLock',message:'Wake Lock acquired',data:{autoPlayActive:this.autoPlayActive},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'H2'})}).catch(()=>{});
-            // #endregion
             this.wakeLockSentinel.addEventListener('release', () => {
-                // #region agent log
-                fetch('http://127.0.0.1:7242/ingest/7c2c19a6-aaed-464a-b0a8-08723f50663f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'script.js:requestWakeLock',message:'Wake Lock released',data:{autoPlayActive:this.autoPlayActive},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'H3'})}).catch(()=>{});
-                // #endregion
                 this.wakeLockSentinel = null;
             });
         } catch (error) {
-            // #region agent log
-            fetch('http://127.0.0.1:7242/ingest/7c2c19a6-aaed-464a-b0a8-08723f50663f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'script.js:requestWakeLock',message:'Wake Lock request failed',data:{autoPlayActive:this.autoPlayActive,error:String(error)},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'H4'})}).catch(()=>{});
-            // #endregion
         }
     }
 
@@ -908,13 +914,7 @@ this.wordSearchQuery = '';
         if (!this.wakeLockSentinel) return;
         try {
             await this.wakeLockSentinel.release();
-            // #region agent log
-            fetch('http://127.0.0.1:7242/ingest/7c2c19a6-aaed-464a-b0a8-08723f50663f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'script.js:releaseWakeLock',message:'Wake Lock released via stop',data:{autoPlayActive:this.autoPlayActive},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'H5'})}).catch(()=>{});
-            // #endregion
         } catch (error) {
-            // #region agent log
-            fetch('http://127.0.0.1:7242/ingest/7c2c19a6-aaed-464a-b0a8-08723f50663f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'script.js:releaseWakeLock',message:'Wake Lock release failed',data:{autoPlayActive:this.autoPlayActive,error:String(error)},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'H6'})}).catch(()=>{});
-            // #endregion
         } finally {
             this.wakeLockSentinel = null;
         }
