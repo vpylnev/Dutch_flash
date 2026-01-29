@@ -15,10 +15,12 @@ class FlashcardApp {
         this.wordListView = 'dutch'; // 'both', 'dutch', 'russian', 'hidden' - default to learning language
         const storedInterfaceLang = localStorage.getItem('interfaceLang');
         this.interfaceLang = storedInterfaceLang || 'ru'; // 'ru' or 'en'
-        // #region agent log
-        fetch('http://127.0.0.1:7242/ingest/7c2c19a6-aaed-464a-b0a8-08723f50663f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'script.js:constructor',message:'Interface language init',data:{storedInterfaceLang,chosenInterfaceLang:this.interfaceLang},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'H1'})}).catch(()=>{});
-        // #endregion
-        this.wordSearchQuery = '';
+this.wordSearchQuery = '';
+        this.autoPlayActive = false;
+        this.autoPlayIntervalMs = 4000;
+        this.autoPlayLastTs = 0;
+        this.autoPlayPendingSpeak = false;
+        this.autoPlayRafId = null;
         
         this.initElements();
         this.initEventListeners();
@@ -48,6 +50,7 @@ class FlashcardApp {
         this.prevBtn = document.getElementById('prev-btn');
         this.nextBtn = document.getElementById('next-btn');
         this.shuffleBtn = document.getElementById('shuffle-btn');
+        this.autoPlayBtn = document.getElementById('auto-play-btn');
         this.speakBtn = document.getElementById('speak-btn');
         this.speakSlowBtn = document.getElementById('speak-slow-btn');
         
@@ -189,6 +192,9 @@ class FlashcardApp {
         this.prevBtn.addEventListener('click', () => this.previousCard());
         this.nextBtn.addEventListener('click', () => this.nextCard());
         this.shuffleBtn.addEventListener('click', () => this.shuffleCards());
+        if (this.autoPlayBtn) {
+            this.autoPlayBtn.addEventListener('click', () => this.toggleAutoPlay());
+        }
         
         // Speak button
         this.speakBtn.addEventListener('click', (e) => {
@@ -341,6 +347,7 @@ class FlashcardApp {
         
         // Initialize button state for both mobile and desktop
         this.updateSoundButton();
+        this.updateAutoPlayButton();
         
         if (this.closeCategoriesBtn) {
             this.closeCategoriesBtn.addEventListener('click', () => this.closeSidebar('left'));
@@ -371,13 +378,7 @@ class FlashcardApp {
         this.allCards.forEach(card => {
             categoryCounts[card.category] = (categoryCounts[card.category] || 0) + 1;
         });
-
-        // #region agent log
-        fetch('http://127.0.0.1:7242/ingest/7c2c19a6-aaed-464a-b0a8-08723f50663f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'script.js:renderCategories',message:'School/work category count',data:{schoolWorkCount:categoryCounts.school_work||0,total:this.allCards.length},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'H2'})}).catch(()=>{});
-        // #endregion
-
-
-        // Add "All" category
+// Add "All" category
         let html = `
             <div class="category-item active" data-category="all">
                 <span>${t.allCategory}</span>
@@ -546,6 +547,11 @@ class FlashcardApp {
                 item.classList.remove('active');
             }
         });
+
+        if (this.autoPlayActive && this.autoPlayPendingSpeak) {
+            this.autoPlayPendingSpeak = false;
+            this.speak();
+        }
     }
 
     flipCard() {
@@ -730,16 +736,57 @@ class FlashcardApp {
         this.updateCard();
         this.updateStats();
         this.updateWordList();
-
-        // #region agent log
-        fetch('http://127.0.0.1:7242/ingest/7c2c19a6-aaed-464a-b0a8-08723f50663f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'script.js:filterByCategory',message:'Category selected',data:{category:this.currentCategory,cardsCount:this.cards.length},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'H3'})}).catch(()=>{});
-        // #endregion
-
-    }
+}
 
     updateStats() {
         this.currentCardEl.textContent = this.currentIndex + 1;
         this.totalCardsEl.textContent = this.cards.length;
+    }
+
+    updateAutoPlayButton() {
+        if (!this.autoPlayBtn) return;
+        const t = translations[this.interfaceLang];
+        const text = this.autoPlayActive ? t.autoPlayStop : t.autoPlayStart;
+        const title = this.autoPlayActive ? t.autoPlayStopTitle : t.autoPlayStartTitle;
+        this.autoPlayBtn.textContent = text;
+        this.autoPlayBtn.title = title;
+    }
+
+    toggleAutoPlay() {
+        if (this.autoPlayActive) {
+            this.stopAutoPlay();
+        } else {
+            this.startAutoPlay();
+        }
+        this.updateAutoPlayButton();
+}
+
+    startAutoPlay() {
+        if (this.autoPlayActive) return;
+        this.autoPlayActive = true;
+        this.autoPlayLastTs = 0;
+        const tick = (ts) => {
+            if (!this.autoPlayActive) return;
+            if (!this.autoPlayLastTs) {
+                this.autoPlayLastTs = ts;
+            } else if (ts - this.autoPlayLastTs >= this.autoPlayIntervalMs) {
+                this.autoPlayLastTs = ts;
+                this.autoPlayPendingSpeak = true;
+                this.nextCard();
+}
+            this.autoPlayRafId = window.requestAnimationFrame(tick);
+        };
+        this.autoPlayRafId = window.requestAnimationFrame(tick);
+    }
+
+    stopAutoPlay() {
+        this.autoPlayActive = false;
+        this.autoPlayLastTs = 0;
+        this.autoPlayPendingSpeak = false;
+        if (this.autoPlayRafId) {
+            window.cancelAnimationFrame(this.autoPlayRafId);
+            this.autoPlayRafId = null;
+        }
     }
     
     // Mobile sidebar management
@@ -897,6 +944,7 @@ class FlashcardApp {
         
         // Update sound button title
         this.updateSoundButton();
+        this.updateAutoPlayButton();
 
     }
     
@@ -932,3 +980,4 @@ class FlashcardApp {
 document.addEventListener('DOMContentLoaded', () => {
     new FlashcardApp();
 });
+

@@ -58,7 +58,3 @@ flashcardsData.push(
     { dutch: "Is dit vers?", russian: "Это свежее?", english: "Is this fresh?", example: "Is this fresh?", category: "shopping_phrases_textbook" }
 );
 
-// #region agent log
-fetch('http://127.0.0.1:7242/ingest/7c2c19a6-aaed-464a-b0a8-08723f50663f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'data-phrases-shopping-textbook.js',message:'Shopping textbook phrases updated',data:{added:4},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'H1'})}).catch(()=>{});
-// #endregion
-

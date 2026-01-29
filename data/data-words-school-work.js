@@ -23,7 +23,3 @@ flashcardsData.push(
     { dutch: "waken", russian: "караулить", english: "to keep watch", example: "to keep watch", category: "school_work" }
 );
 
-// #region agent log
-fetch('http://127.0.0.1:7242/ingest/7c2c19a6-aaed-464a-b0a8-08723f50663f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'data-words-school-work.js',message:'School/work words loaded',data:{count:15},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'H1'})}).catch(()=>{});
-// #endregion
-
