@@ -26,6 +26,9 @@ this.wordSearchQuery = '';
         this.speakRequestId = 0;
         this.wakeLockSentinel = null;
         this.autoPlaySpeakTranslation = true;
+        this.autoPlaySequenceMode = true;
+        this.autoPlayPendingTranslation = null;
+        this.autoPlayPendingAdvance = false;
         
         this.initElements();
         this.initEventListeners();
@@ -40,6 +43,7 @@ this.wordSearchQuery = '';
     initElements() {
         // Card elements
         this.flashcard = document.getElementById('flashcard');
+        this.cardInner = this.flashcard ? this.flashcard.querySelector('.card-inner') : null;
         this.cardInner = this.flashcard ? this.flashcard.querySelector('.card-inner') : null;
         this.frontWord = document.getElementById('front-word');
         this.backWord = document.getElementById('back-word');
@@ -195,10 +199,31 @@ this.wordSearchQuery = '';
         });
         
         if (this.cardInner) {
+            this.cardInner.addEventListener('transitionstart', (e) => {
+                if (e.propertyName !== 'transform') return;
+                if (!this.flashcard.classList.contains('auto-flip-delay')) return;
+                if (this.autoPlayPendingTranslation) {
+                    const pending = this.autoPlayPendingTranslation;
+                    this.autoPlayPendingTranslation = null;
+                    this.speakAutoTranslation(pending.card, pending.requestId, pending.indexAtStart, true);
+                }
+            });
             this.cardInner.addEventListener('transitionend', (e) => {
                 if (e.propertyName !== 'transform') return;
                 if (this.flashcard.classList.contains('auto-flip-delay')) {
                     this.flashcard.classList.remove('auto-flip-delay');
+                }
+            });
+        }
+
+        if (this.flashcard) {
+            this.flashcard.addEventListener('animationend', () => {
+                if (!this.flashcard.classList.contains('auto-next-delay')) return;
+                this.flashcard.classList.remove('auto-next-delay');
+                if (this.autoPlayActive && this.autoPlayPendingAdvance) {
+                    this.autoPlayPendingAdvance = false;
+                    this.autoPlayPendingSpeak = true;
+                    this.nextCard();
                 }
             });
         }
@@ -600,15 +625,45 @@ this.wordSearchQuery = '';
         this.flipCard(false);
     }
 
-    speakAutoTranslation(card, requestId) {
+    applyAutoAdvanceDelay() {
+        if (!this.flashcard) return;
+        if (!this.flashcard.classList.contains('auto-next-delay')) {
+            this.flashcard.classList.add('auto-next-delay');
+        }
+        this.autoPlayPendingAdvance = true;
+    }
+
+    speakAutoTranslation(card, requestId, indexAtStart, shouldAdvanceAfter = false) {
         if (!this.autoPlaySpeakTranslation) return;
-        if (!('speechSynthesis' in window)) return;
+        if (!('speechSynthesis' in window)) {
+            const stillCurrent = this.currentIndex === indexAtStart;
+            if (shouldAdvanceAfter && stillCurrent && requestId === this.speakRequestId) {
+                this.applyAutoAdvanceDelay();
+            }
+            return;
+        }
         const text = this.getCurrentTranslation(card);
-        if (!text) return;
+        if (!text) {
+            const stillCurrent = this.currentIndex === indexAtStart;
+            if (shouldAdvanceAfter && stillCurrent && requestId === this.speakRequestId) {
+                this.applyAutoAdvanceDelay();
+            }
+            return;
+        }
         const utterance = new SpeechSynthesisUtterance(text);
         utterance.lang = this.interfaceLang === 'ru' ? 'ru-RU' : 'en-GB';
         utterance.rate = 0.9;
         utterance.pitch = 1;
+        if (this.isSoundMuted) {
+            utterance.volume = 0;
+        }
+        utterance.onend = () => {
+            const stillCurrent = this.currentIndex === indexAtStart;
+            const shouldAdvance = shouldAdvanceAfter && stillCurrent && requestId === this.speakRequestId;
+            if (shouldAdvance) {
+                this.applyAutoAdvanceDelay();
+            }
+        };
         window.speechSynthesis.speak(utterance);
     }
 
@@ -631,9 +686,11 @@ this.wordSearchQuery = '';
                     const stillCurrent = this.currentIndex === indexAtStart;
                     const shouldFlip = autoFlip && !this.isFlipped && stillCurrent && requestId === this.speakRequestId;
                     if (shouldFlip) {
-                        this.applyAutoFlipDelay();
                         if (source === 'auto-play') {
-                            this.speakAutoTranslation(card, requestId);
+                            this.autoPlayPendingTranslation = { card, requestId, indexAtStart };
+                            this.applyAutoFlipDelay();
+                        } else {
+                            this.applyAutoFlipDelay();
                         }
                     }
                 };
@@ -655,9 +712,11 @@ this.wordSearchQuery = '';
                 const stillCurrent = this.currentIndex === indexAtStart;
                 const shouldFlip = autoFlip && !this.isFlipped && stillCurrent && requestId === this.speakRequestId;
                 if (shouldFlip) {
-                    this.applyAutoFlipDelay();
                     if (source === 'auto-play') {
-                        this.speakAutoTranslation(card, requestId);
+                        this.autoPlayPendingTranslation = { card, requestId, indexAtStart };
+                        this.applyAutoFlipDelay();
+                    } else {
+                        this.applyAutoFlipDelay();
                     }
                 }
             };
@@ -863,6 +922,9 @@ this.wordSearchQuery = '';
         this.autoPlayPendingSpeak = true;
         this.updateCard();
         this.requestWakeLock();
+        if (this.autoPlaySequenceMode) {
+            return;
+        }
         
         const tick = (ts) => {
             if (!this.autoPlayActive) return;
@@ -888,6 +950,11 @@ this.wordSearchQuery = '';
         this.autoPlayActive = false;
         this.autoPlayLastTs = 0;
         this.autoPlayPendingSpeak = false;
+        this.autoPlayPendingTranslation = null;
+        this.autoPlayPendingAdvance = false;
+        if (this.flashcard) {
+            this.flashcard.classList.remove('auto-flip-delay', 'auto-next-delay');
+        }
         if (this.autoPlayRafId) {
             window.cancelAnimationFrame(this.autoPlayRafId);
             this.autoPlayRafId = null;

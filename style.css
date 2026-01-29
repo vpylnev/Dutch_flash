@@ -408,6 +408,15 @@ header h1, .desktop-header h1 {
     transition-delay: 0.2s;
 }
 
+.flashcard.auto-next-delay {
+    animation: autoNextDelay 0.2s linear;
+}
+
+@keyframes autoNextDelay {
+    from { opacity: 1; }
+    to { opacity: 1; }
+}
+
 .flashcard.flipped .card-inner {
     transform: rotateY(180deg);
 }
