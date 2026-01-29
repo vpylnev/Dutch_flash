@@ -202,13 +202,13 @@ this.wordSearchQuery = '';
         // Speak button
         this.speakBtn.addEventListener('click', (e) => {
             e.stopPropagation();
-            this.speak({ autoFlip: true, source: 'button' });
+            this.speak({ autoFlip: false, source: 'button' });
         });
         
         // Speak slow button
         this.speakSlowBtn.addEventListener('click', (e) => {
             e.stopPropagation();
-            this.speakSlow({ autoFlip: true, source: 'slow-button' });
+            this.speakSlow({ autoFlip: false, source: 'slow-button' });
         });
 
         // Language switcher
@@ -312,13 +312,13 @@ this.wordSearchQuery = '';
                 case 'S':
                 case 'ы':
                 case 'Ы':
-                    this.speak({ autoFlip: true, source: 'shortcut' });
+                    this.speak({ autoFlip: false, source: 'shortcut' });
                     break;
                 case 'd':
                 case 'D':
                 case 'в':
                 case 'В':
-                    this.speakSlow({ autoFlip: true, source: 'slow-shortcut' });
+                    this.speakSlow({ autoFlip: false, source: 'slow-shortcut' });
                     break;
             }
         });
@@ -581,15 +581,32 @@ this.wordSearchQuery = '';
         const { autoFlip = false, source = 'unknown' } = options;
         const requestId = ++this.speakRequestId;
         const indexAtStart = this.currentIndex;
+        const card = this.cards[this.currentIndex];
+        const canSpeak = 'speechSynthesis' in window;
         // Check if sound is muted
         if (this.isSoundMuted) {
+            if (autoFlip && canSpeak) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(card.dutch);
+                utterance.lang = 'nl-NL';
+                utterance.rate = 0.8;
+                utterance.pitch = 1;
+                utterance.volume = 0;
+                utterance.onend = () => {
+                    const stillCurrent = this.currentIndex === indexAtStart;
+                    const shouldFlip = autoFlip && !this.isFlipped && stillCurrent && requestId === this.speakRequestId;
+                    if (shouldFlip) {
+                        this.flipCard(false);
+                    }
+                };
+                window.speechSynthesis.speak(utterance);
+                return;
+            }
             return;
         }
         
-        const card = this.cards[this.currentIndex];
-        
         // Always speak Dutch regardless of mode
-        if ('speechSynthesis' in window) {
+        if (canSpeak) {
             window.speechSynthesis.cancel();
             
             const utterance = new SpeechSynthesisUtterance(card.dutch);
