@@ -21,6 +21,9 @@ this.wordSearchQuery = '';
         this.autoPlayLastTs = 0;
         this.autoPlayPendingSpeak = false;
         this.autoPlayRafId = null;
+        this.autoPlayTimerId = null;
+        this.autoPlayTimerActive = false;
+        this.speakRequestId = 0;
         
         this.initElements();
         this.initEventListeners();
@@ -193,19 +196,19 @@ this.wordSearchQuery = '';
         this.nextBtn.addEventListener('click', () => this.nextCard());
         this.shuffleBtn.addEventListener('click', () => this.shuffleCards());
         if (this.autoPlayBtn) {
-            this.autoPlayBtn.addEventListener('click', () => this.toggleAutoPlay());
+            this.autoPlayBtn.addEventListener('click', (e) => this.toggleAutoPlay(e));
         }
         
         // Speak button
         this.speakBtn.addEventListener('click', (e) => {
             e.stopPropagation();
-            this.speak();
+            this.speak({ autoFlip: true, source: 'button' });
         });
         
         // Speak slow button
         this.speakSlowBtn.addEventListener('click', (e) => {
             e.stopPropagation();
-            this.speakSlow();
+            this.speakSlow({ autoFlip: true, source: 'slow-button' });
         });
 
         // Language switcher
@@ -309,13 +312,13 @@ this.wordSearchQuery = '';
                 case 'S':
                 case 'ы':
                 case 'Ы':
-                    this.speak();
+                    this.speak({ autoFlip: true, source: 'shortcut' });
                     break;
                 case 'd':
                 case 'D':
                 case 'в':
                 case 'В':
-                    this.speakSlow();
+                    this.speakSlow({ autoFlip: true, source: 'slow-shortcut' });
                     break;
             }
         });
@@ -367,6 +370,16 @@ this.wordSearchQuery = '';
         });
         window.addEventListener('orientationchange', () => {
             setTimeout(() => this.forceMobileLayout(), 100);
+        });
+
+        document.addEventListener('visibilitychange', () => {
+            if (this.autoPlayActive) {
+                if (document.hidden) {
+                    this.startAutoPlayTimer();
+                } else {
+                    this.stopAutoPlayTimer();
+                }
+            }
         });
     }
 
@@ -550,21 +563,24 @@ this.wordSearchQuery = '';
 
         if (this.autoPlayActive && this.autoPlayPendingSpeak) {
             this.autoPlayPendingSpeak = false;
-            this.speak();
+            this.speak({ autoFlip: true, source: 'auto-play' });
         }
     }
 
-    flipCard() {
+    flipCard(shouldSpeak = true) {
         this.flashcard.classList.toggle('flipped');
         this.isFlipped = !this.isFlipped;
         
         // Auto-speak when flipping to reveal answer
-        if (this.isFlipped) {
-            setTimeout(() => this.speak(), 300);
+        if (this.isFlipped && shouldSpeak) {
+            setTimeout(() => this.speak({ autoFlip: false, source: 'flip' }), 300);
         }
     }
 
-    speak() {
+    speak(options = {}) {
+        const { autoFlip = false, source = 'unknown' } = options;
+        const requestId = ++this.speakRequestId;
+        const indexAtStart = this.currentIndex;
         // Check if sound is muted
         if (this.isSoundMuted) {
             return;
@@ -580,6 +596,15 @@ this.wordSearchQuery = '';
             utterance.lang = 'nl-NL';
             utterance.rate = 0.8;
             utterance.pitch = 1;
+            utterance.onend = () => {
+                const stillCurrent = this.currentIndex === indexAtStart;
+                const shouldFlip = autoFlip && !this.isFlipped && stillCurrent && requestId === this.speakRequestId;
+                if (shouldFlip) {
+                    this.flipCard(false);
+                }
+            };
+            utterance.onerror = () => {
+            };
             
             // Visual feedback
             this.speakBtn.style.transform = 'scale(1.2)';
@@ -593,7 +618,10 @@ this.wordSearchQuery = '';
         }
     }
     
-    speakSlow() {
+    speakSlow(options = {}) {
+        const { autoFlip = false, source = 'unknown' } = options;
+        const requestId = ++this.speakRequestId;
+        const indexAtStart = this.currentIndex;
         // Check if sound is muted
         if (this.isSoundMuted) {
             return;
@@ -615,12 +643,12 @@ this.wordSearchQuery = '';
                 // Voices not loaded yet, wait for them
                 window.speechSynthesis.onvoiceschanged = () => {
                     voices = window.speechSynthesis.getVoices();
-                    this.speakSlowWithVoices(card.dutch, voices, isMobile, isIOS);
+                    this.speakSlowWithVoices(card.dutch, voices, isMobile, isIOS, { autoFlip, source, requestId, indexAtStart });
                 };
                 // Trigger voice loading
                 window.speechSynthesis.getVoices();
             } else {
-                this.speakSlowWithVoices(card.dutch, voices, isMobile, isIOS);
+                this.speakSlowWithVoices(card.dutch, voices, isMobile, isIOS, { autoFlip, source, requestId, indexAtStart });
             }
             
             // Visual feedback
@@ -636,9 +664,17 @@ this.wordSearchQuery = '';
         }
     }
     
-    speakSlowWithVoices(text, voices, isMobile, isIOS) {
+    speakSlowWithVoices(text, voices, isMobile, isIOS, meta = {}) {
+        const { autoFlip = false, source = 'unknown', requestId = 0, indexAtStart = this.currentIndex } = meta;
         const utterance = new SpeechSynthesisUtterance(text);
         utterance.lang = 'nl-NL';
+        utterance.onend = () => {
+            const stillCurrent = this.currentIndex === indexAtStart;
+            const shouldFlip = autoFlip && !this.isFlipped && stillCurrent && requestId === this.speakRequestId;
+            if (shouldFlip) {
+                this.flipCard(false);
+            }
+        };
         
         // Find Dutch voice for better pronunciation
         const dutchVoice = voices.find(voice => voice.lang.startsWith('nl')) || voices[0];
@@ -752,7 +788,7 @@ this.wordSearchQuery = '';
         this.autoPlayBtn.title = title;
     }
 
-    toggleAutoPlay() {
+    toggleAutoPlay(event = null) {
         if (this.autoPlayActive) {
             this.stopAutoPlay();
         } else {
@@ -765,18 +801,28 @@ this.wordSearchQuery = '';
         if (this.autoPlayActive) return;
         this.autoPlayActive = true;
         this.autoPlayLastTs = 0;
+        // Speak current card immediately on start
+        this.autoPlayPendingSpeak = true;
+        this.updateCard();
+        
         const tick = (ts) => {
             if (!this.autoPlayActive) return;
             if (!this.autoPlayLastTs) {
                 this.autoPlayLastTs = ts;
             } else if (ts - this.autoPlayLastTs >= this.autoPlayIntervalMs) {
+                const prevTs = this.autoPlayLastTs;
+                const delta = ts - prevTs;
                 this.autoPlayLastTs = ts;
                 this.autoPlayPendingSpeak = true;
                 this.nextCard();
 }
             this.autoPlayRafId = window.requestAnimationFrame(tick);
         };
-        this.autoPlayRafId = window.requestAnimationFrame(tick);
+        if (document.hidden) {
+            this.startAutoPlayTimer();
+        } else {
+            this.autoPlayRafId = window.requestAnimationFrame(tick);
+        }
     }
 
     stopAutoPlay() {
@@ -786,6 +832,26 @@ this.wordSearchQuery = '';
         if (this.autoPlayRafId) {
             window.cancelAnimationFrame(this.autoPlayRafId);
             this.autoPlayRafId = null;
+        }
+        this.stopAutoPlayTimer();
+    }
+
+    startAutoPlayTimer() {
+        if (this.autoPlayTimerActive) return;
+        this.autoPlayTimerActive = true;
+        this.autoPlayTimerId = window.setInterval(() => {
+            if (!this.autoPlayActive) return;
+            this.autoPlayPendingSpeak = true;
+            this.nextCard();
+        }, this.autoPlayIntervalMs);
+    }
+
+    stopAutoPlayTimer() {
+        if (!this.autoPlayTimerActive) return;
+        this.autoPlayTimerActive = false;
+        if (this.autoPlayTimerId) {
+            window.clearInterval(this.autoPlayTimerId);
+            this.autoPlayTimerId = null;
         }
     }
     

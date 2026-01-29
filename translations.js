@@ -55,8 +55,8 @@ const translations = {
         // Buttons and controls
         previous: "⬅️",
         next: "➡️",
-        shuffle: "🔀 Перемешать",
-        shuffled: "✓ Перемешано",
+        shuffle: "Mix",
+        shuffled: "✓ Mix",
         autoPlayStart: "▶ Авто",
         autoPlayStop: "⏸ Авто",
         autoPlayStartTitle: "Автопроигрывание: старт",
@@ -153,8 +153,8 @@ const translations = {
         // Buttons and controls
         previous: "⬅️",
         next: "➡️",
-        shuffle: "🔀 Shuffle",
-        shuffled: "✓ Shuffled",
+        shuffle: "Mix",
+        shuffled: "✓ Mix",
         autoPlayStart: "▶ Auto",
         autoPlayStop: "⏸ Auto",
         autoPlayStartTitle: "Auto play: start",
