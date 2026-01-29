@@ -13,7 +13,11 @@ class FlashcardApp {
         this.isFlipped = false;
         this.mode = 'nl-ru'; // 'nl-ru' or 'ru-nl'
         this.wordListView = 'dutch'; // 'both', 'dutch', 'russian', 'hidden' - default to learning language
-        this.interfaceLang = localStorage.getItem('interfaceLang') || 'ru'; // 'ru' or 'en'
+        const storedInterfaceLang = localStorage.getItem('interfaceLang');
+        this.interfaceLang = storedInterfaceLang || 'ru'; // 'ru' or 'en'
+        // #region agent log
+        fetch('http://127.0.0.1:7242/ingest/7c2c19a6-aaed-464a-b0a8-08723f50663f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'script.js:constructor',message:'Interface language init',data:{storedInterfaceLang,chosenInterfaceLang:this.interfaceLang},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'H1'})}).catch(()=>{});
+        // #endregion
         this.wordSearchQuery = '';
         
         this.initElements();
@@ -369,7 +373,7 @@ class FlashcardApp {
         });
 
         // #region agent log
-        fetch('http://127.0.0.1:7242/ingest/7c2c19a6-aaed-464a-b0a8-08723f50663f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'script.js:renderCategories',message:'Demo category counts',data:{demoWords:categoryCounts.demo_words||0,demoPhrases:categoryCounts.demo_phrases||0,total:this.allCards.length},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'H3'})}).catch(()=>{});
+        fetch('http://127.0.0.1:7242/ingest/7c2c19a6-aaed-464a-b0a8-08723f50663f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'script.js:renderCategories',message:'School/work category count',data:{schoolWorkCount:categoryCounts.school_work||0,total:this.allCards.length},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'H2'})}).catch(()=>{});
         // #endregion
 
 
@@ -726,6 +730,10 @@ class FlashcardApp {
         this.updateCard();
         this.updateStats();
         this.updateWordList();
+
+        // #region agent log
+        fetch('http://127.0.0.1:7242/ingest/7c2c19a6-aaed-464a-b0a8-08723f50663f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'script.js:filterByCategory',message:'Category selected',data:{category:this.currentCategory,cardsCount:this.cards.length},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'H3'})}).catch(()=>{});
+        // #endregion
 
     }
 

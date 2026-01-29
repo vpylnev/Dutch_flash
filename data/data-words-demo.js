@@ -19,5 +19,13 @@ flashcardsData.push(
 );
 
 
+flashcardsData.push(
+    { dutch: "word1", russian: "слово1", english: "word1", example: "word1 - слово1", category: "demo_words_2" },
+    { dutch: "word2", russian: "слово2", english: "word2", example: "word2 - слово2", category: "demo_words_2" },
+    { dutch: "word3", russian: "слово3", english: "word3", example: "word3 - слово3", category: "demo_words_2" },
+    { dutch: "word4", russian: "слово4", english: "word4", example: "word4 - слово4", category: "demo_words_2" },
+    { dutch: "word5", russian: "слово5", english: "word5", example: "word5 - слово5", category: "demo_words_2" }
+);
+
 
 

@@ -23,6 +23,7 @@
         'data/data-words-basic.js',             // Basic words
         'data/data-words-daily.js',             // Daily life words
         'data/data-words-extended.js',          // Extended words
+        'data/data-words-school-work.js',       // School/work words
         // Demo words: edit data/data-words-demo.js or add your own file
         'data/data-words-demo.js',              // Demo words
         'data/data-words-clothing.js',          // Clothing vocabulary
@@ -53,6 +54,7 @@
         'data/data-words-basic.js': true,             // Greetings, Numbers, Colors, Family
         'data/data-words-daily.js': true,             // Food, Days, Months, Weather
         'data/data-words-extended.js': true,          // Body, Animals, Home, Emotions
+        'data/data-words-school-work.js': true,       // School/work words
         'data/data-words-demo.js': true,              // Demo words
         'data/data-words-clothing.js': true,          // Clothing vocabulary
         'data/data-words-shopping1.js': true,         // Shopping vocabulary part 1 (shops, meat, bread)

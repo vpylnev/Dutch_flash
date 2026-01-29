@@ -21,15 +21,17 @@ const categoryNames = {
     months: "Месяцы",
     body: "Части тела",
     weather: "Погода",
-    weather_school: "Погода (школа)",
+    weather_school: "Школа (погода)",
     animals: "Животные",
     home: "Дом",
     emotions: "Эмоции",
     clothes: "Одежда",
+    school_work: "Школа (работа)",
     // Demo group: add new words in a data file like data-words-demo.js
     // Note: the category list is defined in categoryTypes below in this file.
     // Format: { dutch: "word", russian: "слово", english: "word", example: "...", category: "demo_words" }
     demo_words: "Демо (слова)",
+    demo_words_2: "Демо (слова)",
     shopping_textbook_1: "(учебник) покупки 1",
     shopping_textbook_2: "(учебник) покупки 2",
     shopping_textbook_3: "(учебник) покупки 3",
@@ -60,8 +62,13 @@ const categoryTypes = {
     // 2) Add the new category id to categoryTypes.words or categoryTypes.phrases below.
     // 3) Create a data file with flashcardsData.push(...)
     // 4) Register the file in data_wrapper.js.
-    words: ['greetings', 'numbers', 'colors', 'family', 'food', 'days', 'months', 'body', 'weather', 'weather_school', 'animals', 'home', 'emotions', 'clothes', 'shopping_textbook_1', 'shopping_textbook_2', 'shopping_textbook_3', 'demo_words'],
-    phrases: ['phrases', 'questions', 'questions_wh', 'modal_verbs', 'phrases_negation', 'holidays', 'shopping', 'shopping_phrases_textbook', 'shopping_phrases_textbook_2', 'textbook_verbs_pairs', 'food_price_textbook', 'restaurant', 'travel', 'work', 'demo_phrases']
+    words: ['greetings', 'numbers', 'colors', 'family', 'food', 'days', 'months', 'body', 
+            'weather', 'weather_school', 'school_work', 'animals', 'home', 'emotions', 'clothes', 
+            'shopping_textbook_1', 'shopping_textbook_2', 'shopping_textbook_3', 'demo_words'],
+    phrases: ['phrases', 'questions', 'questions_wh', 'modal_verbs', 'phrases_negation', 
+              'holidays', 'shopping', 'shopping_phrases_textbook', 'shopping_phrases_textbook_2', 
+              'textbook_verbs_pairs', 'food_price_textbook', 'restaurant', 'travel', 
+              'work', 'demo_phrases']
 };
 
 
