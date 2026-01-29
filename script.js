@@ -24,6 +24,7 @@ this.wordSearchQuery = '';
         this.autoPlayTimerId = null;
         this.autoPlayTimerActive = false;
         this.speakRequestId = 0;
+        this.wakeLockSentinel = null;
         
         this.initElements();
         this.initEventListeners();
@@ -374,6 +375,9 @@ this.wordSearchQuery = '';
 
         document.addEventListener('visibilitychange', () => {
             if (this.autoPlayActive) {
+                if (!document.hidden) {
+                    this.requestWakeLock();
+                }
                 if (document.hidden) {
                     this.startAutoPlayTimer();
                 } else {
@@ -821,6 +825,7 @@ this.wordSearchQuery = '';
         // Speak current card immediately on start
         this.autoPlayPendingSpeak = true;
         this.updateCard();
+        this.requestWakeLock();
         
         const tick = (ts) => {
             if (!this.autoPlayActive) return;
@@ -851,6 +856,7 @@ this.wordSearchQuery = '';
             this.autoPlayRafId = null;
         }
         this.stopAutoPlayTimer();
+        this.releaseWakeLock();
     }
 
     startAutoPlayTimer() {
@@ -869,6 +875,48 @@ this.wordSearchQuery = '';
         if (this.autoPlayTimerId) {
             window.clearInterval(this.autoPlayTimerId);
             this.autoPlayTimerId = null;
+        }
+    }
+
+    async requestWakeLock() {
+        if (!('wakeLock' in navigator)) {
+            // #region agent log
+            fetch('http://127.0.0.1:7242/ingest/7c2c19a6-aaed-464a-b0a8-08723f50663f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'script.js:requestWakeLock',message:'Wake Lock not supported',data:{autoPlayActive:this.autoPlayActive,ua:navigator.userAgent},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'H1'})}).catch(()=>{});
+            // #endregion
+            return;
+        }
+        if (this.wakeLockSentinel) return;
+        try {
+            this.wakeLockSentinel = await navigator.wakeLock.request('screen');
+            // #region agent log
+            fetch('http://127.0.0.1:7242/ingest/7c2c19a6-aaed-464a-b0a8-08723f50663f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'script.js:requestWakeLock',message:'Wake Lock acquired',data:{autoPlayActive:this.autoPlayActive},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'H2'})}).catch(()=>{});
+            // #endregion
+            this.wakeLockSentinel.addEventListener('release', () => {
+                // #region agent log
+                fetch('http://127.0.0.1:7242/ingest/7c2c19a6-aaed-464a-b0a8-08723f50663f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'script.js:requestWakeLock',message:'Wake Lock released',data:{autoPlayActive:this.autoPlayActive},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'H3'})}).catch(()=>{});
+                // #endregion
+                this.wakeLockSentinel = null;
+            });
+        } catch (error) {
+            // #region agent log
+            fetch('http://127.0.0.1:7242/ingest/7c2c19a6-aaed-464a-b0a8-08723f50663f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'script.js:requestWakeLock',message:'Wake Lock request failed',data:{autoPlayActive:this.autoPlayActive,error:String(error)},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'H4'})}).catch(()=>{});
+            // #endregion
+        }
+    }
+
+    async releaseWakeLock() {
+        if (!this.wakeLockSentinel) return;
+        try {
+            await this.wakeLockSentinel.release();
+            // #region agent log
+            fetch('http://127.0.0.1:7242/ingest/7c2c19a6-aaed-464a-b0a8-08723f50663f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'script.js:releaseWakeLock',message:'Wake Lock released via stop',data:{autoPlayActive:this.autoPlayActive},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'H5'})}).catch(()=>{});
+            // #endregion
+        } catch (error) {
+            // #region agent log
+            fetch('http://127.0.0.1:7242/ingest/7c2c19a6-aaed-464a-b0a8-08723f50663f',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'script.js:releaseWakeLock',message:'Wake Lock release failed',data:{autoPlayActive:this.autoPlayActive,error:String(error)},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'H6'})}).catch(()=>{});
+            // #endregion
+        } finally {
+            this.wakeLockSentinel = null;
         }
     }
     
