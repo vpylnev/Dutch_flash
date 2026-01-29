@@ -25,6 +25,7 @@ this.wordSearchQuery = '';
         this.autoPlayTimerActive = false;
         this.speakRequestId = 0;
         this.wakeLockSentinel = null;
+        this.autoPlaySpeakTranslation = true;
         
         this.initElements();
         this.initEventListeners();
@@ -599,6 +600,18 @@ this.wordSearchQuery = '';
         this.flipCard(false);
     }
 
+    speakAutoTranslation(card, requestId) {
+        if (!this.autoPlaySpeakTranslation) return;
+        if (!('speechSynthesis' in window)) return;
+        const text = this.getCurrentTranslation(card);
+        if (!text) return;
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = this.interfaceLang === 'ru' ? 'ru-RU' : 'en-GB';
+        utterance.rate = 0.9;
+        utterance.pitch = 1;
+        window.speechSynthesis.speak(utterance);
+    }
+
     speak(options = {}) {
         const { autoFlip = false, source = 'unknown' } = options;
         const requestId = ++this.speakRequestId;
@@ -619,6 +632,9 @@ this.wordSearchQuery = '';
                     const shouldFlip = autoFlip && !this.isFlipped && stillCurrent && requestId === this.speakRequestId;
                     if (shouldFlip) {
                         this.applyAutoFlipDelay();
+                        if (source === 'auto-play') {
+                            this.speakAutoTranslation(card, requestId);
+                        }
                     }
                 };
                 window.speechSynthesis.speak(utterance);
@@ -640,6 +656,9 @@ this.wordSearchQuery = '';
                 const shouldFlip = autoFlip && !this.isFlipped && stillCurrent && requestId === this.speakRequestId;
                 if (shouldFlip) {
                     this.applyAutoFlipDelay();
+                    if (source === 'auto-play') {
+                        this.speakAutoTranslation(card, requestId);
+                    }
                 }
             };
             utterance.onerror = () => {
