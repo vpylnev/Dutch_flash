@@ -627,10 +627,31 @@ this.wordSearchQuery = '';
 
     applyAutoAdvanceDelay() {
         if (!this.flashcard) return;
+        if (this.autoPlayPendingAdvance) return;
         if (!this.flashcard.classList.contains('auto-next-delay')) {
             this.flashcard.classList.add('auto-next-delay');
         }
         this.autoPlayPendingAdvance = true;
+    }
+
+    getTranslationLang() {
+        return this.interfaceLang === 'ru' ? 'ru-RU' : 'en-GB';
+    }
+
+    getAutoFrontSpeech(card) {
+        if (this.mode === 'nl-ru') {
+            return { text: card.dutch, lang: 'nl-NL' };
+        }
+        const translation = this.getCurrentTranslation(card);
+        return { text: translation || '', lang: this.getTranslationLang() };
+    }
+
+    getAutoBackSpeech(card) {
+        if (this.mode === 'nl-ru') {
+            const translation = this.getCurrentTranslation(card);
+            return { text: translation || '', lang: this.getTranslationLang() };
+        }
+        return { text: card.dutch, lang: 'nl-NL' };
     }
 
     speakAutoTranslation(card, requestId, indexAtStart, shouldAdvanceAfter = false) {
@@ -642,21 +663,27 @@ this.wordSearchQuery = '';
             }
             return;
         }
-        const text = this.getCurrentTranslation(card);
-        if (!text) {
+        const backSpeech = this.getAutoBackSpeech(card);
+        if (!backSpeech.text) {
             const stillCurrent = this.currentIndex === indexAtStart;
             if (shouldAdvanceAfter && stillCurrent && requestId === this.speakRequestId) {
                 this.applyAutoAdvanceDelay();
             }
             return;
         }
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = this.interfaceLang === 'ru' ? 'ru-RU' : 'en-GB';
+        const utterance = new SpeechSynthesisUtterance(backSpeech.text);
+        utterance.lang = backSpeech.lang;
         utterance.rate = 0.9;
         utterance.pitch = 1;
         if (this.isSoundMuted) {
             utterance.volume = 0;
+            if (shouldAdvanceAfter) {
+                // If muted, don't rely on onend firing; schedule advance immediately.
+                this.applyAutoAdvanceDelay();
+            }
         }
+        utterance.onstart = () => {
+        };
         utterance.onend = () => {
             const stillCurrent = this.currentIndex === indexAtStart;
             const shouldAdvance = shouldAdvanceAfter && stillCurrent && requestId === this.speakRequestId;
@@ -673,15 +700,19 @@ this.wordSearchQuery = '';
         const indexAtStart = this.currentIndex;
         const card = this.cards[this.currentIndex];
         const canSpeak = 'speechSynthesis' in window;
+        const isAuto = source === 'auto-play';
+        const frontSpeech = isAuto ? this.getAutoFrontSpeech(card) : { text: card.dutch, lang: 'nl-NL' };
         // Check if sound is muted
         if (this.isSoundMuted) {
             if (autoFlip && canSpeak) {
                 window.speechSynthesis.cancel();
-                const utterance = new SpeechSynthesisUtterance(card.dutch);
-                utterance.lang = 'nl-NL';
+                const utterance = new SpeechSynthesisUtterance(frontSpeech.text || card.dutch);
+                utterance.lang = frontSpeech.lang || 'nl-NL';
                 utterance.rate = 0.8;
                 utterance.pitch = 1;
                 utterance.volume = 0;
+                utterance.onstart = () => {
+                };
                 utterance.onend = () => {
                     const stillCurrent = this.currentIndex === indexAtStart;
                     const shouldFlip = autoFlip && !this.isFlipped && stillCurrent && requestId === this.speakRequestId;
@@ -704,10 +735,12 @@ this.wordSearchQuery = '';
         if (canSpeak) {
             window.speechSynthesis.cancel();
             
-            const utterance = new SpeechSynthesisUtterance(card.dutch);
-            utterance.lang = 'nl-NL';
+            const utterance = new SpeechSynthesisUtterance(frontSpeech.text || card.dutch);
+            utterance.lang = frontSpeech.lang || 'nl-NL';
             utterance.rate = 0.8;
             utterance.pitch = 1;
+            utterance.onstart = () => {
+            };
             utterance.onend = () => {
                 const stillCurrent = this.currentIndex === indexAtStart;
                 const shouldFlip = autoFlip && !this.isFlipped && stillCurrent && requestId === this.speakRequestId;
