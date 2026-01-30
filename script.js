@@ -29,6 +29,7 @@ this.wordSearchQuery = '';
         this.autoPlaySequenceMode = true;
         this.autoPlayPendingTranslation = null;
         this.autoPlayPendingAdvance = false;
+        this.autoPlayPendingAdvanceOnFlipEnd = null;
         
         this.initElements();
         this.initEventListeners();
@@ -210,6 +211,14 @@ this.wordSearchQuery = '';
             });
             this.cardInner.addEventListener('transitionend', (e) => {
                 if (e.propertyName !== 'transform') return;
+                if (this.autoPlayPendingAdvanceOnFlipEnd) {
+                    const { requestId, indexAtStart } = this.autoPlayPendingAdvanceOnFlipEnd;
+                    const stillCurrent = this.currentIndex === indexAtStart;
+                    if (this.autoPlayActive && stillCurrent && requestId === this.speakRequestId) {
+                        this.applyAutoAdvanceDelay();
+                    }
+                    this.autoPlayPendingAdvanceOnFlipEnd = null;
+                }
                 if (this.flashcard.classList.contains('auto-flip-delay')) {
                     this.flashcard.classList.remove('auto-flip-delay');
                 }
@@ -678,8 +687,11 @@ this.wordSearchQuery = '';
         if (this.isSoundMuted) {
             utterance.volume = 0;
             if (shouldAdvanceAfter) {
-                // If muted, don't rely on onend firing; schedule advance immediately.
-                this.applyAutoAdvanceDelay();
+                // If muted, wait for flip to complete before scheduling advance.
+                this.autoPlayPendingAdvanceOnFlipEnd = {
+                    requestId,
+                    indexAtStart
+                };
             }
         }
         utterance.onstart = () => {

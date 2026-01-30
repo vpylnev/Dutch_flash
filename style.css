@@ -405,7 +405,7 @@ header h1, .desktop-header h1 {
 }
 
 .flashcard.auto-flip-delay .card-inner {
-    transition-delay: 0.2s;
+    transition-delay: 0.8s;
 }
 
 .flashcard.auto-next-delay {
