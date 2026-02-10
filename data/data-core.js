@@ -26,7 +26,7 @@ const categoryNames = {
     home: "Дом",
     emotions: "Эмоции",
     clothes: "Одежда",
-    school_work: "Школа (работа)",
+    school_work: "Школа (ночь)",
     // Demo group: add new words in a data file like data-words-demo.js
     // Note: the category list is defined in categoryTypes below in this file.
     // Format: { dutch: "word", russian: "слово", english: "word", example: "...", category: "demo_words" }
