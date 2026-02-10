@@ -26,7 +26,7 @@ const categoryNames = {
     home: "Дом",
     emotions: "Эмоции",
     clothes: "Одежда",
-    school_work: "Школа (ночь)",
+    school_night: "Школа (ночь)",
     // Demo group: add new words in a data file like data-words-demo.js
     // Note: the category list is defined in categoryTypes below in this file.
     // Format: { dutch: "word", russian: "слово", english: "word", example: "...", category: "demo_words" }
@@ -63,7 +63,7 @@ const categoryTypes = {
     // 3) Create a data file with flashcardsData.push(...)
     // 4) Register the file in data_wrapper.js.
     words: ['greetings', 'numbers', 'colors', 'family', 'food', 'days', 'months', 'body', 
-            'weather', 'weather_school', 'school_work', 'animals', 'home', 'emotions', 'clothes', 
+            'weather', 'weather_school', 'school_night', 'animals', 'home', 'emotions', 'clothes', 
             'shopping_textbook_1', 'shopping_textbook_2', 'shopping_textbook_3', 'demo_words'],
     phrases: ['phrases', 'questions', 'questions_wh', 'modal_verbs', 'phrases_negation', 
               'holidays', 'shopping', 'shopping_phrases_textbook', 'shopping_phrases_textbook_2', 
