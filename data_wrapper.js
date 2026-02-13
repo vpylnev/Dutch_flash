@@ -21,6 +21,7 @@
     const dataModules = [
         'data/data-core.js',                    // Core structure (must be first)
         'data/data-words-basic.js',             // Basic words
+        'data/data-words-politeness.js',        // Politeness words
         'data/data-words-daily.js',             // Daily life words
         'data/data-words-extended.js',          // Extended words
         'data/data-words-school-work.js',       // School/work words
@@ -52,6 +53,7 @@
     const moduleConfig = {
         'data/data-core.js': true,                    // Required - always true
         'data/data-words-basic.js': true,             // Greetings, Numbers, Colors, Family
+        'data/data-words-politeness.js': true,        // Politeness words
         'data/data-words-daily.js': true,             // Food, Days, Months, Weather
         'data/data-words-extended.js': true,          // Body, Animals, Home, Emotions
         'data/data-words-school-work.js': true,       // School/work words
