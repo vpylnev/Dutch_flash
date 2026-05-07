@@ -1,0 +1,19 @@
+---
+description: Always update source timestamp before every commit
+alwaysApply: true
+---
+
+# Update Timestamp Before Commit
+
+Before creating any commit in this repository, run:
+
+```powershell
+.\update_timestamp.ps1
+```
+
+Requirements:
+- Run the script in the repository root (`flash_dutch`).
+- Include the timestamp change in the same commit together with code changes.
+- Verify `index.html` has updated `last-update-time` before committing.
+
+If the script fails, stop and report the error instead of committing.
