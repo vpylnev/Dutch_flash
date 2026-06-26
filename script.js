@@ -682,7 +682,7 @@ this.wordSearchQuery = '';
         }
         const utterance = new SpeechSynthesisUtterance(backSpeech.text);
         utterance.lang = backSpeech.lang;
-        utterance.rate = 0.9;
+        utterance.rate = 0.45;
         utterance.pitch = 1;
         if (this.isSoundMuted) {
             utterance.volume = 0;
@@ -720,7 +720,7 @@ this.wordSearchQuery = '';
                 window.speechSynthesis.cancel();
                 const utterance = new SpeechSynthesisUtterance(frontSpeech.text || card.dutch);
                 utterance.lang = frontSpeech.lang || 'nl-NL';
-                utterance.rate = 0.8;
+                utterance.rate = 0.4;
                 utterance.pitch = 1;
                 utterance.volume = 0;
                 utterance.onstart = () => {
@@ -749,7 +749,7 @@ this.wordSearchQuery = '';
             
             const utterance = new SpeechSynthesisUtterance(frontSpeech.text || card.dutch);
             utterance.lang = frontSpeech.lang || 'nl-NL';
-            utterance.rate = 0.8;
+            utterance.rate = 0.4;
             utterance.pitch = 1;
             utterance.onstart = () => {
             };
@@ -845,7 +845,7 @@ this.wordSearchQuery = '';
         }
         
         // iOS FIX: Use extremely slow rate for iOS (0.1), moderate for other devices
-        utterance.rate = isIOS ? 0.1 : (isMobile ? 0.3 : 0.5);
+        utterance.rate = isIOS ? 0.05 : (isMobile ? 0.15 : 0.25);
         utterance.pitch = 1;
         utterance.volume = 1;
         
