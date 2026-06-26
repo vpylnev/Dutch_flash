@@ -12,7 +12,7 @@ class FlashcardApp {
         this.currentCategory = 'all';
         this.isFlipped = false;
         this.mode = 'nl-ru'; // 'nl-ru' or 'ru-nl'
-        this.wordListView = 'dutch'; // 'both', 'dutch', 'russian', 'hidden' - default to learning language
+        this.wordListView = 'both'; // 'both', 'dutch', 'russian', 'hidden'
         const storedInterfaceLang = localStorage.getItem('interfaceLang');
         this.interfaceLang = storedInterfaceLang || 'ru'; // 'ru' or 'en'
 this.wordSearchQuery = '';
