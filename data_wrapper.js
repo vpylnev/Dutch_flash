@@ -27,6 +27,7 @@
         'data/data-words-school-work.js',       // School/work words
         'data/data-words-school-time.js',       // School (time) words
         'data/data-words-school-food.js',       // School (food) words
+        'data/data-words-school-art.js',        // School (art) words
         // Demo words: edit data/data-words-demo.js or add your own file
         'data/data-words-demo.js',              // Demo words
         'data/data-words-clothing.js',          // Clothing vocabulary
@@ -61,6 +62,7 @@
         'data/data-words-school-work.js': true,       // School/work words
         'data/data-words-school-time.js': true,       // School (time) words
         'data/data-words-school-food.js': true,       // School (food) words
+        'data/data-words-school-art.js': true,       // School (art) words
         'data/data-words-demo.js': true,              // Demo words
         'data/data-words-clothing.js': true,          // Clothing vocabulary
         'data/data-words-shopping1.js': true,         // Shopping vocabulary part 1 (shops, meat, bread)
